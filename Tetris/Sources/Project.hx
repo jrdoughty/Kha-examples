@@ -137,6 +137,22 @@ class Project {
 					}
 				}
 			}
+			for(i in removableNodes)
+			{
+				takenNodePos.splice(takenNodePos.indexOf(i),1);
+			}
+			for(i in takenNodePos)
+			{
+				for(j in rowsToExplode)
+				{
+					if(i.y < j)
+					{
+						nodes[i.x][i.y].setImage(Assets.images.black);
+						i.y++;
+						nodes[i.x][i.y].setImage(Assets.images.green);
+					}
+				}
+			}
 			createNewShape();
 		}
 		else
