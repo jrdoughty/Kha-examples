@@ -153,17 +153,38 @@ class Project {
 
 	function move(goingLeft:Bool)
 	{
+		var priorNodePos = [];
+		var breakBounds:Bool = false;
+		//Movetopleft
+		for(i in activeNodePos)
+		{
+			priorNodePos.push(i.clone());
+		}
 		for(i in 0...activeNodePos.length)
 		{
 			nodes[activeNodePos[i].x][activeNodePos[i].y].setImage(Assets.images.black);
 			if(goingLeft)
 			{
 				activeNodePos[i].x--;
+				if(activeNodePos[i].x < 0)
+				{
+					breakBounds = true;
+					break;
+				}
 			}
 			else
 			{
 				activeNodePos[i].x++;
+				if(activeNodePos[i].x >= numNodesWidth)
+				{
+					breakBounds = true;
+					break;
+				}
 			}
+		}
+		if(breakBounds)
+		{
+			activeNodePos = priorNodePos;
 		}
 		for(i in 0...activeNodePos.length)
 		{
