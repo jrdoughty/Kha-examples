@@ -281,6 +281,18 @@ class Project {
 		{
 			nodes[i.x][i.y].setImage(Assets.images.black);
 		}
+		var brokeBound:Bool = false;
+		for(i in activeNodePos)
+		{
+			if(i.x >= numNodesWidth || i.x < 0)
+			{
+				brokeBound = true;
+			}
+		}
+		if(brokeBound)
+		{
+			activeNodePos = priorRotateNodePos;
+		}
 		for(i in activeNodePos)
 		{
 			nodes[i.x][i.y].setImage(Assets.images.green);
