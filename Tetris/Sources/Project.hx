@@ -105,6 +105,38 @@ class Project {
 			{
 				takenNodePos.push(activeNodePos[i]);
 			}
+			var count = 0;
+			var rowsToExplode = [];
+			for(i in activeNodePos)
+			{
+				count = 0;
+				if(rowsToExplode.indexOf(i.y) == -1)
+				{
+					for(j in takenNodePos)
+					{
+						if(j.y == i.y)
+						{
+							count++;
+							if(count == numNodesWidth)
+							{
+								rowsToExplode.push(i.y);
+							}
+						}
+					}
+				}
+			}
+			var removableNodes = [];
+			for(i in rowsToExplode)
+			{
+				for(j in takenNodePos)
+				{
+					if(j.y == i)
+					{
+						removableNodes.push(j);
+						nodes[j.x][j.y].setImage(Assets.images.black);
+					}
+				}
+			}
 			createNewShape();
 		}
 		else
