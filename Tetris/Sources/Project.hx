@@ -61,7 +61,6 @@ class Project {
 		createNewShape();
 
 		System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
 		Scheduler.addTimeTask(turn, 0, 1/2);
 		Keyboard.get().notify(onKeyDown, null);
 	}
@@ -77,9 +76,6 @@ class Project {
 		}
 	}
 
-	function update(): Void {
-		
-	}
 
 	function turn()
 	{
@@ -101,69 +97,7 @@ class Project {
 		}
 		if(stop)
 		{
-			for(i in 0...activeNodePos.length)
-			{
-				takenNodePos.push(activeNodePos[i]);
-			}
-			var count = 0;
-			var rowsToExplode = [];
-			for(i in activeNodePos)
-			{
-				count = 0;
-				if(rowsToExplode.indexOf(i.y) == -1)
-				{
-					for(j in takenNodePos)
-					{
-						if(j.y == i.y)
-						{
-							count++;
-							if(count == numNodesWidth)
-							{
-								rowsToExplode.push(i.y);
-							}
-						}
-					}
-				}
-			}
-			var removableNodes = [];
-			for(i in rowsToExplode)
-			{
-				for(j in takenNodePos)
-				{
-					if(j.y == i)
-					{
-						removableNodes.push(j);
-					}
-				}
-			}
-			for(i in removableNodes)
-			{
-				takenNodePos.splice(takenNodePos.indexOf(i),1);
-			}
-			for(i in takenNodePos)
-			{
-				var toMove = 0;
-				for(j in rowsToExplode)
-				{
-					if(i.y < j)
-					{
-						toMove++;
-					}
-				}
-				i.y += toMove;
-			}
-			for(i in nodes)
-			{
-				for(j in i)
-				{
-					j.setImage(Assets.images.black);
-				}
-			}
-			for(i in takenNodePos)
-			{
-				nodes[i.x][i.y].setImage(Assets.images.green);
-			}
-			createNewShape();
+			evaluate();
 		}
 		else
 		{
@@ -226,7 +160,6 @@ class Project {
 	function move(goingLeft:Bool)
 	{
 		var priorNodePos = [];
-		var breakBounds:Bool = false;
 		//Movetopleft
 		for(i in activeNodePos)
 		{
@@ -238,23 +171,13 @@ class Project {
 			if(goingLeft)
 			{
 				activeNodePos[i].x--;
-				if(activeNodePos[i].x < 0 || isPointTaken(activeNodePos[i]))
-				{
-					breakBounds = true;
-					break;
-				}
 			}
 			else
 			{
 				activeNodePos[i].x++;
-				if(activeNodePos[i].x >= numNodesWidth || isPointTaken(activeNodePos[i]))
-				{
-					breakBounds = true;
-					break;
-				}
 			}
 		}
-		if(breakBounds)
+		if(brokeBoundOrOverlap())
 		{
 			activeNodePos = priorNodePos;
 		}
@@ -262,13 +185,6 @@ class Project {
 		{
 			nodes[activeNodePos[i].x][activeNodePos[i].y].setImage(Assets.images.green);
 		}
-	}
-
-	function render(framebuffer: Framebuffer): Void {	
-		var graphics = framebuffer.g2;
-		graphics.begin();
-		Scene.the.render(graphics);
-		graphics.end();
 	}
 
 
@@ -280,7 +196,7 @@ class Project {
 		var originMinX = numNodesWidth;
 		var originMinY = numNodesHeight;
 		var farX = 0;
-		//Movetopleft
+		//setup necessary vars
 		for(i in activeNodePos)
 		{
 			priorRotateNodePos.push(i.clone());
@@ -297,43 +213,43 @@ class Project {
 				originMinY = i.y;
 			}
 		}
+
+		moveTopLeft(originMinX, originMinY);
+
+		rotateActShape();
+
+		adjust();
+
+		moveBack(farX, originMinX, originMinY);
+		
+		//'Redraw'
+		for(i in priorRotateNodePos)
+		{
+			nodes[i.x][i.y].setImage(Assets.images.black);
+		}
+	
+		if(brokeBoundOrOverlap())
+		{
+			activeNodePos = priorRotateNodePos;
+		}
 		for(i in activeNodePos)
 		{
-			i.x -= originMinX;			
-			i.y -= originMinY;
+			nodes[i.x][i.y].setImage(Assets.images.green);
 		}
+	}
 
-		//rotate
+	function rotateActShape()
+	{
 		for(i in activeNodePos)
 		{
 			var oldP = i.clone();
 			i.x = oldP.y * -1;
 			i.y = oldP.x;
 		}
+	}
 
-		//adjustpos
-		var adjustX = 0;
-		var adjustY = 0;
-		for(i in activeNodePos)
-		{
-			if(i.x < adjustX)
-			{
-				adjustX = i.x;
-			}
-			if(i.y < adjustY)
-			{
-				adjustY = i.y;
-			}
-		}
-
-		for(i in activeNodePos)
-		{
-
-			i.x -= adjustX;			
-			i.y -= adjustY;
-		}
-
-		//Moveback
+	function moveBack(farX:Int, originMinX:Int, originMinY:Int)
+	{
 		for(i in activeNodePos)
 		{
 			i.x += originMinX;			
@@ -355,7 +271,6 @@ class Project {
 		}
 
 
-		//Moveback
 		for(i in activeNodePos)
 		{
 			if(highX - lowX > farX - originMinX)
@@ -367,28 +282,150 @@ class Project {
 				i.x++;
 			}
 		}
+	}
 
-
-		//'Redraw'
-		for(i in priorRotateNodePos)
-		{
-			nodes[i.x][i.y].setImage(Assets.images.black);
-		}
-		var brokeBound:Bool = false;
+	function adjust()
+	{
+		var adjustX = 0;
+		var adjustY = 0;
 		for(i in activeNodePos)
 		{
-			if(i.x >= numNodesWidth || i.x < 0)
+			if(i.x < adjustX)
 			{
-				brokeBound = true;
+				adjustX = i.x;
+			}
+			if(i.y < adjustY)
+			{
+				adjustY = i.y;
 			}
 		}
-		if(brokeBound)
-		{
-			activeNodePos = priorRotateNodePos;
-		}
+
 		for(i in activeNodePos)
+		{
+
+			i.x -= adjustX;			
+			i.y -= adjustY;
+		}
+	}
+
+	function moveTopLeft(originMinX:Int, originMinY:Int)
+	{
+		for(i in activeNodePos)
+		{
+			i.x -= originMinX;			
+			i.y -= originMinY;
+		}
+	}
+
+	function brokeBoundOrOverlap():Bool
+	{
+		var result = false;
+		for(i in activeNodePos)
+		{
+			if(i.x >= numNodesWidth || i.x < 0 || isPointTaken(i))
+			{
+				result = true;
+				break;
+			}
+		}
+		return result;
+
+	}
+
+	function evaluate()
+	{
+		for(i in 0...activeNodePos.length)
+		{
+			takenNodePos.push(activeNodePos[i]);
+		}
+		var rowsToExplode = determinRowsToExplode();
+		removeNodes(rowsToExplode);
+
+		shiftPieces(rowsToExplode);		
+
+		redoBoard();
+
+		createNewShape();
+	}
+
+	function redoBoard()
+	{
+		for(i in nodes)
+		{
+			for(j in i)
+			{
+				j.setImage(Assets.images.black);
+			}
+		}
+		for(i in takenNodePos)
 		{
 			nodes[i.x][i.y].setImage(Assets.images.green);
 		}
+	}
+
+	function removeNodes(rowsToExplode:Array<Int>)
+	{
+		var removableNodes = [];
+		for(i in rowsToExplode)
+		{
+			for(j in takenNodePos)
+			{
+				if(j.y == i)
+				{
+					removableNodes.push(j);
+				}
+			}
+		}
+		for(i in removableNodes)
+		{
+			takenNodePos.splice(takenNodePos.indexOf(i),1);
+		}
+	}
+
+	function shiftPieces(rowsToExplode:Array<Int>)
+	{
+		for(i in takenNodePos)
+		{
+			var toMove = 0;
+			for(j in rowsToExplode)
+			{
+				if(i.y < j)
+				{
+					toMove++;
+				}
+			}
+			i.y += toMove;
+		}
+	}
+
+	function determinRowsToExplode():Array<Int>
+	{
+		var result = [];
+		for(i in activeNodePos)
+		{
+			var count = 0;
+			if(result.indexOf(i.y) == -1)
+			{
+				for(j in takenNodePos)
+				{
+					if(j.y == i.y)
+					{
+						count++;
+						if(count == numNodesWidth)
+						{
+							result.push(i.y);
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	function render(framebuffer: Framebuffer): Void {	
+		var graphics = framebuffer.g2;
+		graphics.begin();
+		Scene.the.render(graphics);
+		graphics.end();
 	}
 }
