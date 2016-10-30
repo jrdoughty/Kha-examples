@@ -27,8 +27,8 @@ class Project {
 	var activeNodePos: Array<Point> = [];
 	var takenNodePos: Array<Point> = [];
 	var priorRotateNodePos: Array<Point>;
-	var numNodesWidth:Int = 10;
-	var numNodesHeight:Int = 23;
+	var numNodesWidth:Int = 5;
+	var numNodesHeight:Int = 10;
 	var nodeSpriteWidth:Int = 32;
 	var nodeSpriteHeight:Int = 32;
 	var score = 1;
@@ -133,7 +133,6 @@ class Project {
 					if(j.y == i)
 					{
 						removableNodes.push(j);
-						nodes[j.x][j.y].setImage(Assets.images.black);
 					}
 				}
 			}
@@ -143,15 +142,26 @@ class Project {
 			}
 			for(i in takenNodePos)
 			{
+				var toMove = 0;
 				for(j in rowsToExplode)
 				{
 					if(i.y < j)
 					{
-						nodes[i.x][i.y].setImage(Assets.images.black);
-						i.y++;
-						nodes[i.x][i.y].setImage(Assets.images.green);
+						toMove++;
 					}
 				}
+				i.y += toMove;
+			}
+			for(i in nodes)
+			{
+				for(j in i)
+				{
+					j.setImage(Assets.images.black);
+				}
+			}
+			for(i in takenNodePos)
+			{
+				nodes[i.x][i.y].setImage(Assets.images.green);
 			}
 			createNewShape();
 		}
