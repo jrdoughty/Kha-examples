@@ -27,8 +27,8 @@ class Project {
 	var activeNodePos: Array<Point> = [];
 	var takenNodePos: Array<Point> = [];
 	var priorRotateNodePos: Array<Point>;
-	var numNodesWidth:Int = 5;
-	var numNodesHeight:Int = 10;
+	var numNodesWidth:Int = 10;
+	var numNodesHeight:Int = 20;
 	var nodeSpriteWidth:Int = 32;
 	var nodeSpriteHeight:Int = 32;
 	var score = 1;
@@ -62,7 +62,7 @@ class Project {
 
 		System.notifyOnRender(render);
 		Scheduler.addTimeTask(update, 0, 1 / 60);
-		Scheduler.addTimeTask(turn, 0, 1);
+		Scheduler.addTimeTask(turn, 0, 1/2);
 		Keyboard.get().notify(onKeyDown, null);
 	}
 
@@ -209,6 +209,20 @@ class Project {
 	}
 
 
+	function isPointTaken(p:Point):Bool
+	{
+		var result = false;
+		for(i in takenNodePos)
+		{
+			if(p.x == i.x && p.y == i.y)
+			{
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
 	function move(goingLeft:Bool)
 	{
 		var priorNodePos = [];
@@ -224,7 +238,7 @@ class Project {
 			if(goingLeft)
 			{
 				activeNodePos[i].x--;
-				if(activeNodePos[i].x < 0)
+				if(activeNodePos[i].x < 0 || isPointTaken(activeNodePos[i]))
 				{
 					breakBounds = true;
 					break;
@@ -233,7 +247,7 @@ class Project {
 			else
 			{
 				activeNodePos[i].x++;
-				if(activeNodePos[i].x >= numNodesWidth)
+				if(activeNodePos[i].x >= numNodesWidth || isPointTaken(activeNodePos[i]))
 				{
 					breakBounds = true;
 					break;
