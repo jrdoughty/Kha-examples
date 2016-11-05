@@ -8,10 +8,12 @@ import kha2d.Scene;
 import kha2d.Sprite;
 import kha.Key;
 import kha.input.Keyboard;
+import kha.audio1.Audio;
 
 class Point {
 	public var x:Int;
 	public var y:Int;
+	
 	public function new(x:Int, y:Int) {
 		this.x = x;
 		this.y = y;
@@ -27,11 +29,11 @@ class Project {
 	var activeNodePos: Array<Point> = [];
 	var takenNodePos: Array<Point> = [];
 	var priorRotateNodePos: Array<Point>;
-	var numNodesWidth:Int = 10;
-	var numNodesHeight:Int = 20;
+	var numNodesWidth:Int = 9;
+	var numNodesHeight:Int = 19;
 	var nodeSpriteWidth:Int = 32;
 	var nodeSpriteHeight:Int = 32;
-	var score = 1;
+	var score = 0;
 	var shapes: Array<Array<Point>> = [
 		[new Point(0,0), new Point(1,0), new Point(1,1), new Point(0,1)],//sq
 		[new Point(0,0), new Point(1,0), new Point(2,0), new Point(3,0)],//stick
@@ -45,6 +47,7 @@ class Project {
 	public function new() {
 		var i;
 		var j;
+		Audio.play(Assets.sounds.tetris,true);
 		
 		for(i in 0...numNodesWidth)
 		{
@@ -97,6 +100,7 @@ class Project {
 		}
 		if(stop)
 		{
+			Audio.play(Assets.sounds.MinorExplosion,false).volume = .5;
 			evaluate();
 		}
 		else
@@ -339,6 +343,7 @@ class Project {
 			takenNodePos.push(activeNodePos[i]);
 		}
 		var rowsToExplode = determinRowsToExplode();
+		score += rowsToExplode.length * 100;
 		removeNodes(rowsToExplode);
 
 		shiftPieces(rowsToExplode);		
@@ -376,6 +381,11 @@ class Project {
 				}
 			}
 		}
+		if(removableNodes.length > 0)
+		{
+			Audio.play(Assets.sounds.Explosion,false);
+		}
+
 		for(i in removableNodes)
 		{
 			takenNodePos.splice(takenNodePos.indexOf(i),1);
@@ -425,7 +435,13 @@ class Project {
 	function render(framebuffer: Framebuffer): Void {	
 		var graphics = framebuffer.g2;
 		graphics.begin();
-		Scene.the.render(graphics);
+		Scene.the.render(graphics);		
+		graphics.font = Assets.fonts.OpenSans;
+		graphics.fontSize = 64;
+		graphics.drawString(score+"", 320, 32);
+		graphics.fontSize = 32;
+		graphics.drawString("Original Concept by Alexey Pajinov", 320, 96);
+		graphics.drawString("Original Music by Hirokazu Tanaka", 320, 124);
 		graphics.end();
 	}
 }
