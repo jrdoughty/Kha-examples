@@ -21,6 +21,7 @@ class Project {
 	{
 		//Scene.the.addHero(new Sprite(Assets.images.background));
 		activeState = new MenuState();
+		activeState.init();
 		util.ButtonManager.the;
 	}
 
@@ -54,5 +55,6 @@ class Project {
 	{
 		activeState.kill();
 		activeState = s;
+		activeState.init();
 	}
 }

@@ -6,7 +6,7 @@ class Reg
 	public static var level:Int;
 
 	public static var counters;
-	public static var upgrades;
+	public static var upgrades:Map<String,Map<String,Int>>;
 	
 	public static var gameWidth = 320; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight = 240; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).

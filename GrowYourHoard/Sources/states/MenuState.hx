@@ -22,6 +22,10 @@ class MenuState implements IState
 	var idleAnim:Animation = Animation.createRange(0,1,12);
 	public function new():Void
 	{
+	}
+
+	public function init()
+	{
 		background = new Sprite(Assets.images.menubackground, 320, 240, 0);
 		Scene.the.addOther(background);
 
