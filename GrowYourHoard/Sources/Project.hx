@@ -21,9 +21,10 @@ class Project {
 	{
 		//Scene.the.addHero(new Sprite(Assets.images.background));
 		activeState = new MenuState();
+		util.ButtonManager.the;
 	}
 
-	public static function get_the():Project
+	private static function get_the():Project
 	{
 		if(the == null)
 		{
@@ -47,5 +48,11 @@ class Project {
 			i.render(framebuffer.g2);
 		}
 		framebuffer.g2.end();
+	}
+
+	public function changeState(s:IState)
+	{
+		activeState.kill();
+		activeState = s;
 	}
 }

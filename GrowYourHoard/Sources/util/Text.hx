@@ -47,4 +47,23 @@ class Text
 		graphics.fontSize = fontSize;
 		graphics.drawString(content, x, y);
 	}
+
+	public function kill()
+	{
+		x = null;
+		y = null;
+		fontSize = null;
+		content = null;
+		font = null;
+		color = null;
+	}
+
+	public static function clear()
+	{
+		for(i in texts)
+		{
+			i.kill();
+		}
+		texts = [];
+	}
 }
