@@ -1,16 +1,14 @@
 package;
 
 import kha.Framebuffer;
-import kha.Scheduler;
-import kha.System;
 import kha2d.Scene;
 import states.IState;
-import kha2d.Sprite;
 import states.MenuState;
 import kha.Assets;
 import util.Text;
 
-class Project {
+class Project 
+{
 	
 	public static var the(get, null):Project;
 
@@ -19,7 +17,6 @@ class Project {
 
 	private function new() 
 	{
-		//Scene.the.addHero(new Sprite(Assets.images.background));
 		activeState = new MenuState();
 		activeState.init();
 		util.ButtonManager.the;

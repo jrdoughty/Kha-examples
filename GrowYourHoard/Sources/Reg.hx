@@ -1,4 +1,5 @@
 package;
+import kha2d.Sprite;
 
 class Reg
 {
@@ -7,6 +8,7 @@ class Reg
 
 	public static var counters;
 	public static var upgrades:Map<String,Map<String,Int>>;
+	public static var goblins:Array<Sprite> = [];
 	
 	public static var gameWidth = 320; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight = 240; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -15,7 +17,7 @@ class Reg
 	{
 		Reg.score = 0;
 		Reg.level = 0;
-
+		Reg.goblins = [];
 		Reg.counters = [
 			"goblins_launched"        => 0,
 			"greedy_goblins_launched" => 0,
@@ -47,5 +49,10 @@ class Reg
 				"number" => 0
 			]
 		];
+	}
+
+	public static function resetStage()
+	{
+		Reg.goblins = [];
 	}
 }

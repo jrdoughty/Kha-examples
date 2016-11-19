@@ -4,6 +4,7 @@ import kha2d.Sprite;
 import kha2d.Scene;
 import kha.Assets;
 import util.Text;
+import haxe.Timer;
 import Reg;
 
 class PlayState implements IState
@@ -11,9 +12,14 @@ class PlayState implements IState
 	private var background:Sprite;
 	private var castle:Sprite;
 	private var shieldSprite:Sprite;
-	private var goblinSprite:Sprite;
+	private var ogreSprite:Sprite;
 	private var greedySprite:Sprite;
 	private var shieldCountText:Text;
+	private var greedCountText:Text;
+	private var ogreCountText:Text;
+	private var scoreText:Text;
+	private var spawnTimer:Timer;
+
 	public function new()
 	{
 	}
@@ -29,29 +35,70 @@ class PlayState implements IState
 		castle.x = 250; 
 		castle.y = 57;
 		Scene.the.addOther(castle);
-		createUnitCounts();
+		createCounts();
+
+		spawnTimer = new Timer(getSpawnTime());
+		spawnTimer.run = spawn;
+
+		//spawn();
 	}
 
-	private function createUnitCounts()
+	private function getSpawnTime():Int
+	{
+		return Math.floor(2000 * (Math.random()));
+	}
+
+	private function createCounts()
 	{
 		shieldSprite = new Sprite(Assets.images.shieldui);
 		Scene.the.addOther(shieldSprite);
-		shieldCountText = new Text(Reg.upgrades["large_shield"]["number"]+"", 0, 32);
-		/*
-		
-		add(new UIUnit(0, 18, new GreedyGoblin()));
-		greedCountText = new FlxText(16, 18, 32);
-		greedCountText.text = Reg.upgrades["greedy_goblin"]["number"]+"";
-		greedCountText.setFormat(AssetPaths.Our_Arcade_Games__ttf, 12, FlxColor.GOLDEN, "left");
-		greedCountText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(greedCountText);
-		
-		add(new UIUnit(4, 36, new Ogre()));
-		ogreCountText = new FlxText(16, 36, 32);
-		ogreCountText.text = Reg.upgrades["ogre"]["number"]+"";
-		ogreCountText.setFormat(AssetPaths.Our_Arcade_Games__ttf, 12, FlxColor.GOLDEN, "left");
-		ogreCountText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(ogreCountText);*/
+		shieldCountText = new Text(Reg.upgrades["large_shield"]["number"]+"", 0, 25, 16);
+
+		greedySprite = new Sprite(Assets.images.goblinbigbag, 20, 20);
+		greedySprite.x = 25;
+		Scene.the.addOther(greedySprite);
+		greedCountText = new Text(Reg.upgrades["greedy_goblin"]["number"]+"", 28, 25, 16);
+
+		ogreSprite = new Sprite(Assets.images.ogre, 32, 64);
+		ogreSprite.scaleX = .35;
+		ogreSprite.scaleY = .35;
+		ogreSprite.x = 60;
+		Scene.the.addOther(ogreSprite);
+		ogreCountText = new Text(Reg.upgrades["ogre"]["number"]+"", 58, 25, 16);
+
+		scoreText = new Text(Reg.score+"",128,0,20);
+	}
+
+
+	private function spawn()
+	{
+		spawnTimer.stop();
+		spawnTimer = new Timer(getSpawnTime());
+		spawnTimer.run = spawn;
+
+		var s:Sprite;
+
+		if (Reg.upgrades["greedy_goblin"]["number"] > 0 || Math.random() > 0.8)
+		{
+			s = new Sprite(Assets.images.goblinbigbag,20,20);
+			s.y = 190;
+			trace('greed');
+		}
+		else if (Reg.upgrades["ogre"]["number"] > 0 || Math.random() > 0.8)
+		{
+			s = new Sprite(Assets.images.ogre, 32, 64);
+			s.y = 148;
+			trace('ogre');
+		}
+		else
+		{
+			s = new Sprite(Assets.images.goblin1,20,20);
+			s.y = 190;
+		}
+		s.scaleX = -1;
+		s.x = 260;
+
+		Scene.the.addOther(s);
 	}
 
 	public function kill()
