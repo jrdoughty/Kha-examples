@@ -19,6 +19,9 @@ class PlayState implements IState
 	private var ogreCountText:Text;
 	private var scoreText:Text;
 	private var spawnTimer:Timer;
+	private var shootTimer:Timer;
+	private var levelTimer:Timer;
+	private var soldierTimer:Timer;
 
 	public function new()
 	{
@@ -40,7 +43,19 @@ class PlayState implements IState
 		spawnTimer = new Timer(getSpawnTime());
 		spawnTimer.run = spawn;
 
-		//spawn();
+		spawn();
+
+		shootTimer = new Timer(getSpawnTime());
+		shootTimer.run = shoot;
+
+		Reg.level += 1;
+		levelTimer = new Timer((30 + Reg.level) * 1000);
+		levelTimer.run = kill;
+		if (Reg.level > 3)
+		{
+			soldierTimer = new Timer(Math.round(Math.random() * 15000 + 5000));
+			soldierTimer.run = spawnSoldier;
+		}
 	}
 
 	private function getSpawnTime():Int
@@ -78,13 +93,13 @@ class PlayState implements IState
 
 		var s:Sprite;
 
-		if (Reg.upgrades["greedy_goblin"]["number"] > 0 || Math.random() > 0.8)
+		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.8)
 		{
 			s = new Sprite(Assets.images.goblinbigbag,20,20);
 			s.y = 190;
 			trace('greed');
 		}
-		else if (Reg.upgrades["ogre"]["number"] > 0 || Math.random() > 0.8)
+		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.8)
 		{
 			s = new Sprite(Assets.images.ogre, 32, 64);
 			s.y = 148;
@@ -97,12 +112,49 @@ class PlayState implements IState
 		}
 		s.scaleX = -1;
 		s.x = 260;
-
+		Reg.goblins.push(s);
 		Scene.the.addOther(s);
+	}
+	private function spawnSoldier()
+	{
+		trace('soldier spawned');
+	}
+	private function shoot()
+	{
+		shootTimer.stop();
+		shootTimer = new Timer(getSpawnTime());
+		shootTimer.run = shoot;
+		if (Math.random() > .1 + Reg.level/30)
+		{
+			trace('arrow');
+		}
+		else
+		{
+			trace('axe');
+		}
 	}
 
 	public function kill()
 	{
-
+		for(i in Reg.goblins)
+		{
+			Scene.the.removeOther(i);
+			i = null;
+		}
+		Reg.goblins = [];
+		Scene.the.removeOther(background);
+		Scene.the.removeOther(castle);
+		Scene.the.removeOther(shieldSprite);
+		Scene.the.removeOther(ogreSprite);
+		Scene.the.removeOther(greedySprite);
+		background = null;
+		castle = null;
+		shieldSprite = null;
+		ogreSprite = null;
+		greedySprite = null;
+		spawnTimer.stop();
+		shootTimer.stop();
+		levelTimer.stop();
+		
 	}
 }
