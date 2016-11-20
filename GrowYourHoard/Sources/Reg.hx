@@ -1,5 +1,5 @@
 package;
-import kha2d.Sprite;
+import actors.Goblin;
 
 class Reg
 {
@@ -8,7 +8,7 @@ class Reg
 
 	public static var counters:Map<String,Int>;
 	public static var upgrades:Map<String,Map<String,Int>>;
-	public static var goblins:Array<Sprite> = [];
+	public static var goblins:Array<Goblin> = [];
 	
 	public static var gameWidth = 320; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight = 240; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -38,15 +38,15 @@ class Reg
 			],
 			"greedy_goblin" => [
 				"cost"   => 1,
-				"number" => 0
+				"number" => 10
 			],
 			"ogre" => [
 				"cost"   => 1,
-				"number" => 0
+				"number" => 10
 			],
 			"large_shield" => [
 				"cost"   => 5,
-				"number" => 0
+				"number" => 10
 			]
 		];
 	}

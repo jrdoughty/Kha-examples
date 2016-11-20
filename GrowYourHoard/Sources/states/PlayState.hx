@@ -92,29 +92,27 @@ class PlayState implements IState
 		spawnTimer = new Timer(getSpawnTime());
 		spawnTimer.run = spawn;
 
-		var s:Sprite;
+		var g:Goblin;
 
-		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.999)
+		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.8)
 		{
-			s = new Sprite(Assets.images.goblinbigbag,20,20);
-			s.y = 190;
+			g = new Goblin(Assets.images.goblinbigbag, 20, 20, 260, 190, 1, 3);
 			trace('greed');
 		}
-		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.999)
+		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.8)
 		{
-			s = new Sprite(Assets.images.ogre, 32, 64);
-			s.y = 148;
+			g = new Goblin(Assets.images.ogre, 32, 64, 260, 148, 5, 1);
 			trace('ogre');
 		}
 		else
 		{
-			s = new Goblin(Assets.images.goblin1, 20, 20, 260, 190, 3, 1);
-			s.y = 190;
+			g = new Goblin(Assets.images.goblin1, 20, 20, 260, 190, 1, 1);
+			g.y = 190;
 		}
-		s.scaleX = -1;
-		s.x = 260;
-		Reg.goblins.push(s);
-		Scene.the.addOther(s);
+		g.scaleX = -1;
+		g.x = 260;
+		Reg.goblins.push(g);
+		Scene.the.addOther(g);
 	}
 	private function spawnSoldier()
 	{
@@ -139,6 +137,18 @@ class PlayState implements IState
 
 	public function update()
 	{
+
+		for(i in Reg.goblins)
+		{
+			
+			if (i.x < 0 - i.width)
+			{
+				Reg.score += i.getScore();
+				i.kill();
+				Reg.goblins.splice(Reg.goblins.indexOf(i), 1);
+			}
+		}
+
 		shieldCountText.content = Reg.upgrades["large_shield"]["number"]+"";
 
 		greedCountText.content = Reg.upgrades["greedy_goblin"]["number"]+"";
@@ -169,6 +179,6 @@ class PlayState implements IState
 		spawnTimer.stop();
 		shootTimer.stop();
 		levelTimer.stop();
-		
+		Text.clear();
 	}
 }

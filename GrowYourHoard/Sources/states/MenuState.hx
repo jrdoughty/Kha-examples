@@ -55,8 +55,8 @@ class MenuState implements IState
 	public function play(b:Int,x:Int,y:Int)//sprite:FlxSprite = null)
 	{
 		Reg.reset();
-		Project.the.changeState(new PlayState());
 		kill();
+		Project.the.changeState(new PlayState());
 	}
 
 	public function help(b:Int,x:Int,y:Int)//sprite:FlxSprite = null)
