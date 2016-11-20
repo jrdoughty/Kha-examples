@@ -34,6 +34,7 @@ class Project
 	public function update(): Void 
 	{
 		Scene.the.update();
+		activeState.update();
 	}
 
 	public function render(framebuffer: Framebuffer): Void 

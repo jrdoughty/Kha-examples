@@ -6,6 +6,7 @@ import kha.Assets;
 import util.Text;
 import haxe.Timer;
 import Reg;
+import actors.Goblin;
 
 class PlayState implements IState
 {	
@@ -93,13 +94,13 @@ class PlayState implements IState
 
 		var s:Sprite;
 
-		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.8)
+		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.999)
 		{
 			s = new Sprite(Assets.images.goblinbigbag,20,20);
 			s.y = 190;
 			trace('greed');
 		}
-		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.8)
+		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.999)
 		{
 			s = new Sprite(Assets.images.ogre, 32, 64);
 			s.y = 148;
@@ -107,7 +108,7 @@ class PlayState implements IState
 		}
 		else
 		{
-			s = new Sprite(Assets.images.goblin1,20,20);
+			s = new Goblin(Assets.images.goblin1, 20, 20, 260, 190, 3, 1);
 			s.y = 190;
 		}
 		s.scaleX = -1;
@@ -132,6 +133,19 @@ class PlayState implements IState
 		{
 			trace('axe');
 		}
+	}
+
+
+
+	public function update()
+	{
+		shieldCountText.content = Reg.upgrades["large_shield"]["number"]+"";
+
+		greedCountText.content = Reg.upgrades["greedy_goblin"]["number"]+"";
+
+		ogreCountText.content = Reg.upgrades["ogre"]["number"]+"";
+
+		scoreText.content = Reg.score+"";
 	}
 
 	public function kill()

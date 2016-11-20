@@ -6,7 +6,7 @@ class Reg
 	public static var score:Int;
 	public static var level:Int;
 
-	public static var counters;
+	public static var counters:Map<String,Int>;
 	public static var upgrades:Map<String,Map<String,Int>>;
 	public static var goblins:Array<Sprite> = [];
 	

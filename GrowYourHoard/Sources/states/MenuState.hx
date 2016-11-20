@@ -84,4 +84,9 @@ class MenuState implements IState
 		subHead = null;
 		head = null;
 	}
+
+	public function update()
+	{
+		return;
+	}
 }

@@ -27,18 +27,18 @@ class Goblin extends Sprite
 	private function setup()
 	{
 		
-		animation.add("main", [0, 1, 2, 1], 12, true);
-		animation.play("main");
+		//animation.add("main", [0, 1, 2, 1], 12, true);
+		//animation.play("main");
 
 		Reg.counters["goblins_launched"] += 1;
 
-		FlxVelocity.moveTowardsPoint(this, new FlxPoint(0 - width, y), 60);
+		//FlxVelocity.moveTowardsPoint(this, new FlxPoint(0 - width, y), 60);
 	}
 
 	override public function update():Void
 	{
 		super.update();
-
+		x--;
 		if (this.x < 0 - width)
 		{
 			Reg.score += getScore();
@@ -57,11 +57,11 @@ class Goblin extends Sprite
 
 	private function getScore():Int
 	{
-		if (Type.getClass(FlxG.state) == PlayState)
+		//if (Type.getClass(FlxG.state) == PlayState)
 		{
 			return value;
 		}
-		else
+		//else
 		{
 			return 0;
 		}

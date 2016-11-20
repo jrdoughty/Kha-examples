@@ -6,4 +6,6 @@ interface IState
 
 	public function kill():Void;
 
+	public function update():Void;
+
 }
