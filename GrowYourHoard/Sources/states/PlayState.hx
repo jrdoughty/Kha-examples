@@ -7,6 +7,7 @@ import util.Text;
 import haxe.Timer;
 import Reg;
 import actors.Goblin;
+import kha2d.Animation;
 
 class PlayState implements IState
 {	
@@ -96,7 +97,7 @@ class PlayState implements IState
 
 		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.8)
 		{
-			g = new Goblin(Assets.images.goblinbigbag, 20, 20, 260, 190, 1, 3);
+			g = new Goblin(Assets.images.goblinbigbag, 20, 20, 260, 190, 1, 3, .3, "greedy_goblin",null,new Animation([3,4,5,4], 5));
 			trace('greed');
 		}
 		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.8)
@@ -145,7 +146,7 @@ class PlayState implements IState
 			{
 				Reg.score += i.getScore();
 				i.kill();
-				Reg.goblins.splice(Reg.goblins.indexOf(i), 1);
+				Reg.goblins.splice(Reg.goblins.indexOf(i), 1)[0] = null;//kill the goblins with fire!
 			}
 		}
 
