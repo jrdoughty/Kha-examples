@@ -46,7 +46,7 @@ class Goblin extends Sprite
 
 	override public function update():Void
 	{
-		if (tiredAnim != null && Math.random() <= .01)
+		if (tiredAnim != null && (moves ? Math.random() <= .01 :Math.random() <= .03))
 		{
 			moves = !moves;
 			setAnimation(moves ? mainAnim : tiredAnim );
