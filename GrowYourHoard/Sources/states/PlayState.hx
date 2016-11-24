@@ -8,6 +8,9 @@ import haxe.Timer;
 import Reg;
 import actors.Goblin;
 import kha2d.Animation;
+import actors.Projectile;
+import verlet.collision.Colliders;
+import kha.math.Vector2;
 
 class PlayState implements IState
 {	
@@ -24,6 +27,10 @@ class PlayState implements IState
 	private var shootTimer:Timer;
 	private var levelTimer:Timer;
 	private var soldierTimer:Timer;
+	private var box:Box;
+	private var circ:Circle;
+	private var circX:Float = 260;
+	private var circY:Float = 100;
 
 	public function new()
 	{
@@ -53,6 +60,10 @@ class PlayState implements IState
 		Reg.level += 1;
 		levelTimer = new Timer((30 + Reg.level) * 1000);
 		levelTimer.run = kill;
+
+		circ = new Circle(new Vector2(circX, circY), 20);
+		box = new Box(new Vector2(0, 208), 320, 40);
+
 		if (Reg.level > 3)
 		{
 			soldierTimer = new Timer(Math.round(Math.random() * 15000 + 5000));
@@ -127,18 +138,30 @@ class PlayState implements IState
 		if (Math.random() > .1 + Reg.level/30)
 		{
 			trace('arrow');
+			Scene.the.addOther(new Projectile(Assets.images.arrow, 8, 8, 250,70));
 		}
 		else
 		{
 			trace('axe');
+			Scene.the.addOther(new Projectile(Assets.images.axe, 8, 8, 250,70));
 		}
 	}
 
 
-
+	var count:Int = 0;
 	public function update()
 	{
-
+		count++;
+		if(count % 6 > 4)
+		{
+			circ.pos.x-= 5;
+			circ.pos.y-= 3;
+		}
+		else
+		{
+			circ.pos.x = circX;
+			circ.pos.y = circY;
+		}
 		for(i in Reg.goblins)
 		{
 			
