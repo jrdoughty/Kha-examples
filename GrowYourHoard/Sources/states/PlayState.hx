@@ -27,10 +27,15 @@ class PlayState implements IState
 	private var shootTimer:Timer;
 	private var levelTimer:Timer;
 	private var soldierTimer:Timer;
-	private var box:Box;
 	private var circ:Circle;
-	private var circX:Float = 260;
+	private var circX:Float = 264;
 	private var circY:Float = 100;
+	private var floorY:Float = 203;
+	private var arrowSpawnX:Float = 250;
+	private var arrowSpawnY:Float = 75;
+	public var goblins:Array<Goblin> = [];
+	private var projectiles:Array<Projectile> = [];
+	private var fCount:Int = 0;
 
 	public function new()
 	{
@@ -62,7 +67,6 @@ class PlayState implements IState
 		levelTimer.run = kill;
 
 		circ = new Circle(new Vector2(circX, circY), 20);
-		box = new Box(new Vector2(0, 208), 320, 40);
 
 		if (Reg.level > 3)
 		{
@@ -73,7 +77,7 @@ class PlayState implements IState
 
 	private function getSpawnTime():Int
 	{
-		return Math.floor(2000 * (Math.random()));
+		return Math.floor(1000 * Math.random() * 4);
 	}
 
 	private function createCounts()
@@ -123,7 +127,7 @@ class PlayState implements IState
 		}
 		g.scaleX = -1;
 		g.x = 260;
-		Reg.goblins.push(g);
+		goblins.push(g);
 		Scene.the.addOther(g);
 	}
 	private function spawnSoldier()
@@ -138,38 +142,47 @@ class PlayState implements IState
 		if (Math.random() > .1 + Reg.level/30)
 		{
 			trace('arrow');
-			Scene.the.addOther(new Projectile(Assets.images.arrow, 8, 8, 250,70));
+			projectiles.push(new Projectile(Assets.images.arrow, 8, 8, arrowSpawnX, arrowSpawnY));
+			Scene.the.addOther(projectiles[projectiles.length - 1]);
 		}
 		else
 		{
 			trace('axe');
-			Scene.the.addOther(new Projectile(Assets.images.axe, 8, 8, 250,70));
+			projectiles.push(new Projectile(Assets.images.axe, 8, 8, arrowSpawnX, arrowSpawnY));
+			Scene.the.addOther(projectiles[projectiles.length - 1]);
 		}
 	}
 
 
-	var count:Int = 0;
 	public function update()
 	{
-		count++;
-		if(count % 6 > 4)
+		fCount++;
+		if(fCount % 6 > 4)
 		{
-			circ.pos.x-= 5;
-			circ.pos.y-= 3;
+			circ.pos.x-= 7;
+			circ.pos.y-= 4;
 		}
 		else
 		{
 			circ.pos.x = circX;
 			circ.pos.y = circY;
 		}
-		for(i in Reg.goblins)
+		for(i in goblins)
 		{
 			
 			if (i.x < 0 - i.width)
 			{
 				Reg.score += i.getScore();
 				i.kill();
-				Reg.goblins.splice(Reg.goblins.indexOf(i), 1)[0] = null;//kill the goblins with fire!
+				goblins.splice(goblins.indexOf(i), 1)[0] = null;//kill the goblins with fire!
+			}
+		}
+
+		for(i in projectiles)
+		{
+			if(i.y >= floorY)
+			{
+				i.point = null;
 			}
 		}
 
@@ -184,12 +197,12 @@ class PlayState implements IState
 
 	public function kill()
 	{
-		for(i in Reg.goblins)
+		for(i in goblins)
 		{
 			Scene.the.removeOther(i);
 			i = null;
 		}
-		Reg.goblins = [];
+		goblins = [];
 		Scene.the.removeOther(background);
 		Scene.the.removeOther(castle);
 		Scene.the.removeOther(shieldSprite);
