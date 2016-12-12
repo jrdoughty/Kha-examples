@@ -3,11 +3,19 @@
 	"levels":[
 		{
 			"id":0,
+			"days":-1,
 			"sprites":[
 				{
 					"idString":"John",
-					"x": 200,
-					"y": 200
+					"x": 180,
+					"y": 160,
+					"frame":0
+				},
+				{
+					"idString":"Grandma",
+					"x": 209,
+					"y": 140,
+					"frame":1
 				}
 			],
 			"chats": {
@@ -21,7 +29,7 @@
 								"chat": null
 							},
 							{
-								"text": "Wow, that is purple!",
+								"text": "Thought I'd pop by for a... Wow, that is purple!",
 								"chat": null
 							}
 						]
@@ -85,16 +93,60 @@
 						]
 					},
 					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"Well I'd heard you'd had some trouble, you have a doctor's appointment tomorrow",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"Yes, your Aunt Shelly is picking me up at... Oh heavens what time is she...",
+								"chat":null
+							},
+							{
+								"text":"(looks around confused)",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"(Sees sticky note on Refrigerator) Here it is...",
+								"chat":null
+							},
+							{
+								"text":"(Pulls up note) 2:30pm, she'll be here not long after lunch.",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"2:30? Hmmm, I could have sworn it was in the morning... Oh well",
+								"chat":null
+							}
+						]
+					},
+					{
 						"type": "choice",
 						"char":"John",
 						"texts":[
 							{
 								"text":"I got a promotion at work!",
 								"chat":"promotion"
-							},
-							{
-								"text":"Is the food any better here?",
-								"chat":"foodsucks"
 							}
 						]
 					}
@@ -121,7 +173,22 @@
 							{
 								"text":"I always knew you had it in you!",
 								"chat":null
-							},
+							}
+						]
+					},{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"I know, thank you for being so supportive",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
 							{
 								"text":"So what does that mean you'll do?",
 								"chat":null
@@ -139,6 +206,52 @@
 							{
 								"text":"I get to work with artists, programmers, and testers and help them make great stuff!",
 								"chat":null
+							},
+							{
+								"text":"I'll be busy, but I'll still come by often",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"Well I hope so, hearing about you and the family is my life right now",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"I have to go, I'll be back next week",
+								"chat":"endlevel"
+							}
+						]
+					}
+				],
+				"foodsucks":[
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"Is the food any better here?",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"Its OK... Nothing to talk about",
+								"chat":null
 							}
 						]
 					},
@@ -147,32 +260,53 @@
 						"char":"John",
 						"texts":[
 							{
-								"text":"I got a promotion at work!",
-								"chat":"promotion"
+								"text":"How are you doing Grandma?",
+								"chat":"nothingtotell"
 							},
 							{
-								"text":"Is the food any better here?",
-								"chat":"foodsucks"
+								"text":"I got a promotion at work!",
+								"chat":"promotion"
 							}
 						]
 					}
+					
 				]
 			}
 		},
 		{
 			"id":1,
+			"days":60,
 			"sprites":[
 				{
 					"idString":"John",
-					"x": 200,
-					"y": 200
+					"x": 160,
+					"y": 180,
+					"frame":0
+				},
+				{
+					"idString":"Grandma",
+					"x": 240,
+					"y": 140,
+					"frame":3
+				},
+				{
+					"idString":"Vincent",
+					"x": 209,
+					"y": 140,
+					"frame":2
+				},
+				{
+					"idString":"Mom",
+					"x": 280,
+					"y": 140,
+					"frame":1
 				}
 			],
 			"chats": {
 				"main":[
 					{
 						"type": "dialog",
-						"char":"grandma",
+						"char":"Grandma",
 						"texts":[
 							{
 								"text": "You're running late today",
@@ -186,7 +320,7 @@
 					},
 					{
 						"type": "choice",
-						"char":"mom",
+						"char":"Mom",
 						"texts":[
 							{
 								"text":"We're always here at 10:30",
@@ -206,7 +340,7 @@
 				"correction":[
 					{
 						"type": "dialog",
-						"char":"mom",
+						"char":"Mom",
 						"texts":[
 							{
 								"text":"We're always here at 10:30 every Saturday",
@@ -216,7 +350,7 @@
 					},
 					{
 						"type": "reaction",
-						"char":"grandma",
+						"char":"Grandma",
 						"texts":[
 							{
 								"text":"You're usually here much earlier!",

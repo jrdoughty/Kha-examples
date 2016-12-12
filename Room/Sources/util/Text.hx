@@ -60,6 +60,7 @@ class Text
 
 	public static function clear()
 	{
+		trace("clear");
 		for(i in texts)
 		{
 			i.kill();

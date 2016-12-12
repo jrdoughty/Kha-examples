@@ -20,21 +20,23 @@ class Button
 		background.y = y;
 		background.scaleX = width/background.width;
 		background.scaleY = height/background.height;
+		//background.z = 10000000;
 		text = new Text(textString, Math.round(x + background.width/10), Math.round(y + background.height/10),Math.round(height*.66));
-		Scene.the.addOther(background);
+		Scene.the.addHero(background);
 		this.click = click;
-		buttons.push(this);
+		var t = new haxe.Timer(1000);
+		t.run = function(){buttons.push(this);t.stop();};
+		
 	}
 
 
 	public function kill()
 	{
-			if(background != null)
-			{
-				Scene.the.removeOther(background);
-				background = null;
-			}
-			text.kill();
+		trace('kill');
+
+		Scene.the.removeOther(background);
+		background = null;
+		text.kill();
 	}
 
 	public static function clear()
@@ -43,6 +45,7 @@ class Button
 		{
 			i.kill();
 		}
+		buttons = [];
 	}
 
 	
