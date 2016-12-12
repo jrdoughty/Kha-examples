@@ -1,0 +1,239 @@
+{
+
+	"levels":[
+		{
+			"id":0,
+			"sprites":[
+				{
+					"idString":"John",
+					"x": 200,
+					"y": 200
+				}
+			],
+			"chats": {
+				"main":[
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text": "(as he walks in knocking) Hey Grandma! It's John!",
+								"chat": null
+							},
+							{
+								"text": "Wow, that is purple!",
+								"chat": null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text": "Good Morning John!",
+								"chat": null
+							},
+							{
+								"text": "Yes, they asked me what I wanted for decor, and this is what I asked for",
+								"chat": null
+							},
+							{
+								"text": "Not a big fan of it only being one room though...",
+								"chat": null
+							}
+						]
+					},
+					{
+						"type": "choice",
+						"char":"John",
+						"texts":[
+							{
+								"text":"How are you doing Grandma?",
+								"chat":"nothingtotell"
+							},
+							{
+								"text":"I got a promotion at work!",
+								"chat":"promotion"
+							},
+							{
+								"text":"Is the food any better here?",
+								"chat":"foodsucks"
+							}
+						]
+					}
+				],
+				"nothingtotell":[
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"How are you doing Grandma?",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"Well ok, there's not much for me to do but watch TV. I'm very bored...",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "choice",
+						"char":"John",
+						"texts":[
+							{
+								"text":"I got a promotion at work!",
+								"chat":"promotion"
+							},
+							{
+								"text":"Is the food any better here?",
+								"chat":"foodsucks"
+							}
+						]
+					}
+				],
+				"promotion":[
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"I made producer at work!",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"Grandma",
+						"texts":[
+							{
+								"text":"That's great John!",
+								"chat":null
+							},
+							{
+								"text":"I always knew you had it in you!",
+								"chat":null
+							},
+							{
+								"text":"So what does that mean you'll do?",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "dialog",
+						"char":"John",
+						"texts":[
+							{
+								"text":"Means I'll be working with lots of developers on big projects!",
+								"chat":null
+							},
+							{
+								"text":"I get to work with artists, programmers, and testers and help them make great stuff!",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "choice",
+						"char":"John",
+						"texts":[
+							{
+								"text":"I got a promotion at work!",
+								"chat":"promotion"
+							},
+							{
+								"text":"Is the food any better here?",
+								"chat":"foodsucks"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"id":1,
+			"sprites":[
+				{
+					"idString":"John",
+					"x": 200,
+					"y": 200
+				}
+			],
+			"chats": {
+				"main":[
+					{
+						"type": "dialog",
+						"char":"grandma",
+						"texts":[
+							{
+								"text": "You're running late today",
+								"chat": null
+							},
+							{
+								"text": "Where have you been?",
+								"chat": null
+							}
+						]
+					},
+					{
+						"type": "choice",
+						"char":"mom",
+						"texts":[
+							{
+								"text":"We're always here at 10:30",
+								"chat":"correction"
+							},
+							{
+								"text":"Sorry Mom",
+								"chat":"letitbe"
+							},
+							{
+								"text":"Look Who We Have",
+								"chat":"distract"
+							}
+						]
+					}
+				],
+				"correction":[
+					{
+						"type": "dialog",
+						"char":"mom",
+						"texts":[
+							{
+								"text":"We're always here at 10:30 every Saturday",
+								"chat":null
+							}
+						]
+					},
+					{
+						"type": "reaction",
+						"char":"grandma",
+						"texts":[
+							{
+								"text":"You're usually here much earlier!",
+								"chat":"defiant"
+							},
+							{
+								"text":"Oh I'm sorry, I'm very tired, and well... bored...",
+								"chat":"correction"
+							},
+							{
+								"text":"Are you? Sorry I'm just sitting here all morning. I've not seen anyone all week",
+								"chat":"correction"
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}
