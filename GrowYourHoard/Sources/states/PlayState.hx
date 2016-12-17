@@ -163,7 +163,7 @@ class PlayState implements IState
 			{
 				Reg.score += i.getScore();
 				i.kill();
-				goblins.splice(goblins.indexOf(i), 1)[0] = null;//kill the goblins with fire!
+				goblins.remove(i);
 			}
 		}
 
@@ -171,8 +171,11 @@ class PlayState implements IState
 		{
 			if(i.y >= floorY)
 			{
-				i.point = null;
-				
+				if(i.point != null)
+				{
+					i.point.destroy();
+					i.point = null;
+				}
 				i.setAnimation(i.deadAnim);
 			}
 		}
@@ -200,8 +203,17 @@ class PlayState implements IState
 		Scene.the.removeOther(ogreSprite);
 		Scene.the.removeOther(greedySprite);
 		*/
+		for(i in projectiles)
+		{
+			if(i.point != null)
+			{
+				i.point.destroy();
+				i.point = null;
+			}
+		}
 		Scene.the.clear();
 		goblins = [];
+		projectiles = [];
 		background = null;
 		castle = null;
 		shieldSprite = null;

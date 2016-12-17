@@ -71,6 +71,7 @@ class ProjectilePoint extends Point
 
 	public function destroy()
 	{
-
+		Verlet.Instance.composites.remove(composite);
+		composite = null;
 	}
 }
