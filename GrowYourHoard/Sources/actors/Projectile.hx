@@ -40,14 +40,14 @@ class Projectile extends Sprite
 		{
 			if(image.width == width)
 			{
-				var difx=x-point.composite.verts[0].x;
+				var difx=x + Math.abs(width)/2 -point.composite.verts[0].x;
 				var dify=y-point.composite.verts[0].y;
 
 				var radius = Math.sqrt(difx * difx + dify * dify);
 				angle = Math.acos(difx/radius)*-1+Math.PI/4;
 			}
 
-			x = point.composite.verts[0].x;
+			x = point.composite.verts[0].x - Math.abs(width)/2;
 			y = point.composite.verts[0].y;
 		}
 	}

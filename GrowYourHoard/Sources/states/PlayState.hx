@@ -166,7 +166,8 @@ class PlayState implements IState
 				goblins.remove(i);
 			}
 		}
-
+		var pToRemove = [];
+		var gToRemove = [];
 		for(i in projectiles)
 		{
 			if(i.y >= floorY)
@@ -178,6 +179,36 @@ class PlayState implements IState
 				}
 				i.setAnimation(i.deadAnim);
 			}
+			else
+			{
+				for(j in goblins)
+				{
+					if(i.point.composite.particles[0].pos.x >= j.x && i.point.composite.particles[0].pos.x <= j.x + Math.abs(j.width) &&
+					i.point.composite.particles[0].pos.y >= j.y && i.point.composite.particles[0].pos.y <= j.y + j.height )
+					{
+						j.kill();
+						Scene.the.removeHero(j);
+						gToRemove.push(j);
+						if(i.point != null)
+						{
+							i.point.destroy();
+							i.point = null;
+						}
+						Scene.the.removeProjectile(i);
+						pToRemove.push(i);
+						break;
+					}
+				}
+			}
+		}
+
+		for(i in pToRemove)
+		{
+			projectiles.remove(i);
+		}
+		for(i in gToRemove)
+		{
+			goblins.remove(i);
 		}
 
 		shieldCountText.content = Reg.upgrades["large_shield"]["number"]+"";
