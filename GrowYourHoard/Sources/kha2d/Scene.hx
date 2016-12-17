@@ -115,22 +115,16 @@ class Scene {
 	public function removeHero(sprite: Sprite) {
 		sprite.removed = true;
 		dirtySprites = true;
-		//if (collisionLayer != null) collisionLayer.removeHero(sprite);
-		//sprites.remove(sprite);
 	}
 	
 	public function removeEnemy(sprite: Sprite) {
 		sprite.removed = true;
 		dirtySprites = true;
-		//if (collisionLayer != null) collisionLayer.removeEnemy(sprite);
-		//sprites.remove(sprite);
 	}
 	
 	public function removeProjectile(sprite: Sprite) {
 		sprite.removed = true;
 		dirtySprites = true;
-		//if (collisionLayer != null) collisionLayer.removeProjectile(sprite);
-		//sprites.remove(sprite);
 	}
 	
 	public function removeOther(sprite: Sprite) {
