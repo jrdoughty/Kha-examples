@@ -5,15 +5,15 @@ class Reg
 	public static var score:Int;
 	public static var level:Int;
 
-	public static var counters:Map<String,Int>;
-	public static var upgrades:Map<String,Map<String,Int>>;
+	public static var counters:Map<String,Int> = new Map<String,Int>();
+	public static var upgrades:Map<String,Map<String,Int>> = new Map<String,Map<String,Int>>();
 	
 	public static var gameWidth = 320; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight = 240; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	
 	public static function reset():Void
 	{
-		Reg.score = 0;
+		Reg.score = 50;
 		Reg.level = 0;
 		Reg.counters = [
 			"goblins_launched"        => 0,

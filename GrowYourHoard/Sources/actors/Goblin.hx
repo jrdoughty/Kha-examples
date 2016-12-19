@@ -41,9 +41,11 @@ class Goblin extends Sprite
 		{
 			this.tiredAnim = tiredAnim;
 		}
-		Reg.counters[tag+"s_launched"] += 1;
+		if(Reg.counters.exists(tag+"s_launched"))
+		{
+			Reg.counters[tag+"s_launched"] += 1;
+		}
 	}
-
 	override public function update():Void
 	{
 		if (tiredAnim != null && (moves ? Math.random() <= .01 :Math.random() <= .03))

@@ -11,6 +11,7 @@ import kha2d.Animation;
 import actors.Projectile;
 import verlet.collision.Colliders;
 import kha.math.Vector2;
+import actors.Player;
 
 class PlayState implements IState
 {	
@@ -27,11 +28,7 @@ class PlayState implements IState
 	private var shootTimer:Timer;
 	private var levelTimer:Timer;
 	private var soldierTimer:Timer;
-	private var circ:Circle;
-	private var circX:Float = 270+ 1000;
-	private var circY:Float = 100;
-	private var circMX:Float = 9;
-	private var circMY:Float = 5;
+	private var player:Player;
 	private var floorY:Float = 206;
 	private var arrowSpawnX:Float = 250;
 	private var arrowSpawnY:Float = 75;
@@ -55,6 +52,9 @@ class PlayState implements IState
 		castle.y = 57;
 		Scene.the.addOther(castle);
 		createCounts();
+
+		player = new Player(Assets.images.shield,20,25,0,185);
+		Scene.the.addHero(player);
 
 		spawnTimer = new Timer(getSpawnTime());
 		spawnTimer.run = spawn;
@@ -166,6 +166,10 @@ class PlayState implements IState
 				goblins.remove(i);
 			}
 		}
+
+
+
+
 		var pToRemove = [];
 		var gToRemove = [];
 		for(i in projectiles)
@@ -179,6 +183,17 @@ class PlayState implements IState
 				}
 				i.setAnimation(i.deadAnim);
 			}
+			else if (i.point.composite.particles[0].pos.x >= player.x && i.point.composite.particles[0].pos.x <= player.x + Math.abs(player.width) &&
+					i.point.composite.particles[0].pos.y >= player.y && i.point.composite.particles[0].pos.y <= player.y + player.height )
+			{
+				if(i.point != null)
+				{
+					i.point.destroy();
+					i.point = null;
+				}
+				Scene.the.removeProjectile(i);
+				pToRemove.push(i);
+			}
 			else
 			{
 				for(j in goblins)
@@ -189,11 +204,7 @@ class PlayState implements IState
 						j.kill();
 						Scene.the.removeHero(j);
 						gToRemove.push(j);
-						if(i.point != null)
-						{
-							i.point.destroy();
-							i.point = null;
-						}
+						i.kill();
 						Scene.the.removeProjectile(i);
 						pToRemove.push(i);
 						break;
@@ -236,11 +247,7 @@ class PlayState implements IState
 		*/
 		for(i in projectiles)
 		{
-			if(i.point != null)
-			{
-				i.point.destroy();
-				i.point = null;
-			}
+			i.kill();
 		}
 		Scene.the.clear();
 		goblins = [];
@@ -254,5 +261,6 @@ class PlayState implements IState
 		shootTimer.stop();
 		levelTimer.stop();
 		Text.clear();
+		Project.the.changeState(new ShowHoardState());
 	}
 }

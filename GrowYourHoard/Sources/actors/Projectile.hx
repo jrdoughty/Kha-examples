@@ -14,7 +14,7 @@ class Projectile extends Sprite
 {
 	public var point:ProjectilePoint;
 	public var deadAnim:Animation;
-	public function new(image:Image, width:Int, height:Int, spawnX:Float, spawnY:Float, deadAnim:Animation)
+	public function new(image:Image, width:Int, height:Int, spawnX:Float, spawnY:Float, deadAnim:Animation,?speedX:Float, ?speedY:Float)
 	{
 		super(image, width, height);
 		if(image.width != width || image.height != height)
@@ -29,7 +29,17 @@ class Projectile extends Sprite
 		}
 		x = spawnX;
 		y = spawnY;
-		point = new ProjectilePoint(new Vector2(spawnX,spawnY));
+
+		if(speedY == null)
+		{
+			speedY = Math.random()*10;
+		}
+		if(speedX == null)
+		{
+			speedX = Math.random()*4+1;
+		}
+
+		point = new ProjectilePoint(new Vector2(spawnX, spawnY), speedX, speedY);
 		angle = 0;
 	}
 
@@ -52,16 +62,28 @@ class Projectile extends Sprite
 		}
 	}
 
+	public function kill()
+	{
+		if(point != null)
+		{
+			point.destroy();
+			point = null;
+		}
+	}
+
+	public function setScale(f:Float)
+	{
+		scaleX = f;
+		scaleY = f;
+	}
+
 }
 
 class ProjectilePoint extends Point
 {
-	public function new(pos:Vector2) 
+	public function new(pos:Vector2, yV:Float, xV:Float) 
 	{
 		super(pos);
-		var yV = Math.random()*10;
-		var xV = Math.random()*4+1;
-		
 		for(i in composite.particles)
 		{
 			i.lastPos =new Vector2(pos.x+xV,pos.y+yV);
