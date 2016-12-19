@@ -19,7 +19,6 @@ class Projectile extends Sprite
 		super(image, width, height);
 		if(image.width != width || image.height != height)
 		{
-			trace('test' + (Math.floor(image.width/width * image.height/height)-1));
 			setAnimation(Animation.createRange(0,Math.floor(image.width/width * image.height/height)-1, 5));
 			this.deadAnim = deadAnim;
 		}

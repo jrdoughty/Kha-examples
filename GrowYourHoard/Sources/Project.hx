@@ -4,6 +4,7 @@ import kha.Framebuffer;
 import kha2d.Scene;
 import states.IState;
 import states.MenuState;
+import states.HoardState;
 import kha.Assets;
 import util.Text;
 import Reg;
@@ -23,7 +24,8 @@ class Project
 
 	private function new() 
 	{
-		activeState = new MenuState();
+		Reg.reset();
+		activeState = new HoardState();
 		activeState.init();
 		util.ButtonManager.the;
 		verletRenderer = Renderer.Instance;

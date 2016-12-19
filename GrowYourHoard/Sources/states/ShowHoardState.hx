@@ -9,6 +9,7 @@ import kha2d.Sprite;
 import kha2d.Scene;
 import actors.Projectile;
 import kha2d.Animation;
+
 /**
  * ...
  * @author John Doughty
@@ -34,27 +35,7 @@ class ShowHoardState implements IState
 		head = new Text("HOARD", 90, 45, 40);
 		scoreText = new Text("0 Gold",80, 100, 40);
 		Scene.the.addOther(new Goblin(Assets.images.goblin1,20 ,20 ,250, 125,5,0,3));
-		/*
-		subHead = new FlxText(0, 0, 320);
-		subHead.text = "GROW YOUR";
-		subHead.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		subHead.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(subHead);
-		head = new FlxText(0, 35, 320);
-		head.text = "HOARD";
-		head.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		head.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		head.scale.set(2, 2);
-		add(head);
-		add(new Goblin(250, 125));
-		scoreText = new FlxText(0, 100, 320);
-		scoreText.text = "0 Gold";
-		scoreText.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		scoreText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(scoreText);
-		*/
-		buyBtn = new util.Button(25, 155, 275, 80, new Sprite(Assets.images.button), "Invest", buy);
-		//add(buyBtn);
+		buyBtn = new Button(25, 155, 275, 80, new Sprite(Assets.images.button), "Invest", buy);
 	}
 	
 	public function buy(?b:Int,?x:Int,?y:Int):Void
@@ -77,7 +58,7 @@ class ShowHoardState implements IState
 		coins = [];
 		Scene.the.clear();
 
-		Project.the.changeState(new PlayState());
+		Project.the.changeState(new HoardState());
 	}
 	
 	public function update():Void 

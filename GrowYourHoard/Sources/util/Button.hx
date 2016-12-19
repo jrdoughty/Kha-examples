@@ -29,9 +29,12 @@ class Button
 
 	public function kill()
 	{
+		if(!background.removed)
+		{
 			Scene.the.removeOther(background);
-			background = null;
-			text.kill();
+		}
+		background = null;
+		text.kill();
 	}
 
 	public static function clear()
@@ -40,6 +43,7 @@ class Button
 		{
 			i.kill();
 		}
+		buttons = [];
 	}
 
 	
