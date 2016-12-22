@@ -66,7 +66,7 @@ class PlayState implements IState
 
 		Reg.level += 1;
 		levelTimer = new Timer((30 + Reg.level) * 1000);
-		levelTimer.run = kill;
+		levelTimer.run = function(){Project.the.changeState(new ShowHoardState());};
 
 		if (Reg.level > 3)
 		{
@@ -261,6 +261,5 @@ class PlayState implements IState
 		shootTimer.stop();
 		levelTimer.stop();
 		Text.clear();
-		Project.the.changeState(new ShowHoardState());
 	}
 }

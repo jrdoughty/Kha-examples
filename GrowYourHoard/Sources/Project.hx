@@ -62,6 +62,10 @@ class Project
 
 	public function changeState(s:IState)
 	{
+		if(activeState != null)
+		{
+			activeState.kill();
+		}
 		activeState = s;
 		activeState.init();
 	}

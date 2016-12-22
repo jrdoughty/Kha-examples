@@ -40,7 +40,7 @@ class ShowHoardState implements IState
 	
 	public function buy(?b:Int,?x:Int,?y:Int):Void
 	{
-		kill();
+		Project.the.changeState(new HoardState());
 	}
 	
 	public function kill():Void
@@ -58,7 +58,6 @@ class ShowHoardState implements IState
 		coins = [];
 		Scene.the.clear();
 
-		Project.the.changeState(new HoardState());
 	}
 	
 	public function update():Void 

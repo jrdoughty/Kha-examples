@@ -100,7 +100,6 @@ class HoardState implements IState
 		greed = null;
 		shield = null;
 		ogre = null;
-		Project.the.changeState(new PlayState());
 	}
 
 	/**
@@ -122,7 +121,6 @@ class HoardState implements IState
 
 	private function play(?b:Int,?x:Int,?y:Int)
 	{
-		kill();
 		Project.the.changeState(new PlayState());
 	}
 
