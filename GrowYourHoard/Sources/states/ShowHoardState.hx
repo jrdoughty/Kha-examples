@@ -14,7 +14,7 @@ import kha2d.Animation;
  * ...
  * @author John Doughty
  */
-class ShowHoardState implements IState
+class ShowHoardState extends BaseState
 {
 
 	var score:Int = 0;
@@ -28,7 +28,7 @@ class ShowHoardState implements IState
 	{
 	}
 
-	public function init():Void 
+	public override function init():Void 
 	{
 		Scene.the.addOther(new Sprite(Assets.images.menubackground));
 		subHead = new Text("GROW YOUR", 42, 0, 40);
@@ -43,9 +43,9 @@ class ShowHoardState implements IState
 		Project.the.changeState(new HoardState());
 	}
 	
-	public function kill():Void
+	public override function kill():Void
 	{
-		Text.clear();
+		super.kill();
 		subHead = null;
 		head = null;
 		scoreText = null;
@@ -56,11 +56,10 @@ class ShowHoardState implements IState
 			i.kill();
 		}
 		coins = [];
-		Scene.the.clear();
 
 	}
 	
-	public function update():Void 
+	public override function update():Void 
 	{
 		if (score < Reg.score && scoreText != null)
 		{

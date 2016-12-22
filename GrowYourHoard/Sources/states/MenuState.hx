@@ -9,7 +9,7 @@ import Reg;
 import util.Text;
 import states.PlayState;
 
-class MenuState implements IState
+class MenuState extends BaseState
 {
 	var background:Sprite;
 	var subHead:Text;
@@ -24,7 +24,7 @@ class MenuState implements IState
 	{
 	}
 
-	public function init()
+	public override function init()
 	{
 		background = new Sprite(Assets.images.menubackground, 320, 240, 0);
 		Scene.the.addOther(background);
@@ -55,7 +55,6 @@ class MenuState implements IState
 	public function play(b:Int,x:Int,y:Int)//sprite:FlxSprite = null)
 	{
 		Reg.reset();
-		kill();
 		Project.the.changeState(new PlayState());
 	}
 
@@ -68,25 +67,17 @@ class MenuState implements IState
 	{
 		//FlxG.switchState(new states.CreditsState());
 	}
-	public function kill():Void
+	public override function kill():Void
 	{
-		Button.clear();
+		super.kill();
 		playBtn = null;
 		helpBtn = null;
 		creditsBtn = null;
-		Scene.the.removeOther(background);
 		background = null;
-		Scene.the.removeOther(goblin);
 		goblin = null;
-		Scene.the.removeOther(goblin2);
 		goblin2 = null;
-		Text.clear();
 		subHead = null;
 		head = null;
 	}
 
-	public function update()
-	{
-		return;
-	}
 }

@@ -1,18 +1,15 @@
 package states;
 
-import actors.Goblin;
 import util.Text;
 import util.Button;
 import kha.Assets;
 import kha2d.Sprite;
 import kha2d.Scene;
-import actors.Projectile;
-import kha2d.Animation;
 
 /**
  * A FlxState which can be used for the game's menu.
  */
-class HoardState implements IState
+class HoardState extends BaseState
 {
 	private var subHead:Text;
 	private var head:Text;
@@ -65,7 +62,7 @@ class HoardState implements IState
 	/**
 	 * Function that is called up when to state is created to set it up.
 	 */
-	public function init():Void
+	public override function init():Void
 	{
 		menuButtons = [];
 
@@ -81,10 +78,9 @@ class HoardState implements IState
 	 * Function that is called when this state is destroyed - you might want to
 	 * consider setting all objects this state uses to null to help garbage collection.
 	 */
-	public function kill():Void
+	public override function kill():Void
 	{
-		Text.clear();
-		Button.clear();
+		super.kill();
 		head = null;
 		subHead = null;
 		scoreText = null;
@@ -92,10 +88,6 @@ class HoardState implements IState
 		greedCountText = null;
 		ogreCountText = null;
 		menuButtons = [];
-		Scene.the.removeOther(shield);
-		Scene.the.removeOther(greed);
-		Scene.the.removeOther(ogre);
-		Scene.the.removeOther(coin);
 		coin = null;
 		greed = null;
 		shield = null;
@@ -105,7 +97,7 @@ class HoardState implements IState
 	/**
 	 * Function that is called once every frame.
 	 */
-	public function update():Void
+	public override function update():Void
 	{
 		updateUnitCounts();
 	}

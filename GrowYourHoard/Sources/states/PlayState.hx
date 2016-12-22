@@ -13,7 +13,7 @@ import verlet.collision.Colliders;
 import kha.math.Vector2;
 import actors.Player;
 
-class PlayState implements IState
+class PlayState extends BaseState
 {	
 	private var background:Sprite;
 	private var castle:Sprite;
@@ -40,7 +40,7 @@ class PlayState implements IState
 	{
 	}
 	
-	public function init()
+	public override function init()
 	{
 		background = new Sprite(Assets.images.background);
 		background.x = 0;
@@ -154,7 +154,7 @@ class PlayState implements IState
 	}
 
 
-	public function update()
+	public override function update()
 	{
 		for(i in goblins)
 		{
@@ -231,25 +231,13 @@ class PlayState implements IState
 		scoreText.content = Reg.score+"";
 	}
 
-	public function kill()
+	public override function kill()
 	{
-		/*
-		for(i in goblins)
-		{
-			Scene.the.removeOther(i);
-			i = null;
-		}
-		Scene.the.removeOther(background);
-		Scene.the.removeOther(castle);
-		Scene.the.removeOther(shieldSprite);
-		Scene.the.removeOther(ogreSprite);
-		Scene.the.removeOther(greedySprite);
-		*/
+		super.kill();
 		for(i in projectiles)
 		{
 			i.kill();
 		}
-		Scene.the.clear();
 		goblins = [];
 		projectiles = [];
 		background = null;
@@ -260,6 +248,5 @@ class PlayState implements IState
 		spawnTimer.stop();
 		shootTimer.stop();
 		levelTimer.stop();
-		Text.clear();
 	}
 }
