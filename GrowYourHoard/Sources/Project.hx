@@ -24,7 +24,7 @@ class Project
 	private function new() 
 	{
 		Reg.reset();
-		activeState = new MenuState();
+		activeState = new states.PlayState();
 		activeState.init();
 		util.ButtonManager.the;
 		verletRenderer = Renderer.Instance;

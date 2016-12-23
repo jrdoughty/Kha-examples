@@ -13,12 +13,12 @@ class Reg
 	
 	public static function reset():Void
 	{
-		Reg.score = 50;
+		Reg.score = 90;
 		Reg.level = 0;
 		Reg.counters = [
-			"goblins_launched"        => 0,
-			"greedy_goblins_launched" => 0,
-			"ogres_launched"          => 0,
+			"goblins_launched"        => 100,
+			"greedy_goblins_launched" => 20,
+			"ogres_launched"          => 10,
 			"goblins_harmed"        => 0,
 			"greedy_goblins_harmed" => 0,
 			"ogres_harmed"          => 0,

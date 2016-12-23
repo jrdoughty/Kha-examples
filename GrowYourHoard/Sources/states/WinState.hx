@@ -1,117 +1,92 @@
 package states;
 
-import actors.Coin;
-import actors.GreedyGoblin;
-import actors.Ogre;
 import actors.Goblin;
-import flixel.addons.nape.FlxNapeState;
-import flixel.addons.nape.FlxNapeSprite;
-import flixel.group.FlxGroup;
-import nape.space.Space;
-import nape.geom.Vec2;
-import flixel.util.FlxRandom;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.FlxSprite;
-import flixel.FlxG;
-import states.CreditsState;
-import states.MenuState;
+import util.Text;
 import util.Button;
+import kha.Assets;
+import kha2d.Sprite;
+import kha2d.Scene;
+import actors.Projectile;
+import kha2d.Animation;
 
-class WinState extends FlxNapeState
+class WinState extends BaseState
 {
+
 	var score:Int = 0;
-	var subHead:FlxText;
-	var head:FlxText;
-	var scoreText:FlxText;
-	var menuBtn:util.Button;
-	var creditsBtn:util.Button;
+	var subHead:Text;
+	var head:Text;
+	var scoreText:Text;
+	var coins:Array<Projectile> = [];
+	var menuBtn:Button;
+	var creditsBtn:Button;
 	var goblinSurvivors:Int;
 	var greedyGoblinSurvivors:Int;
 	var ogreSurvivors:Int;
 
-	override public function create():Void
+	public function new()
 	{
-		super.create();
-		
+	}
+
+	public override function init():Void 
+	{
 		goblinSurvivors = Reg.counters["goblins_launched"] - Reg.counters["goblins_harmed"];
 		greedyGoblinSurvivors = Reg.counters["greedy_goblins_launched"] - Reg.counters["greedy_goblins_harmed"];
 		ogreSurvivors = Reg.counters["ogres_launched"] - Reg.counters["ogres_harmed"];
-		
-		add(new FlxSprite(0, 0, AssetPaths.menubackground__png));
 
-		FlxNapeState.space.gravity.setxy(0, 500);
+		Scene.the.addOther(new Sprite(Assets.images.menubackground));
+		subHead = new Text("GROW YOUR", 42, 0, 40);
+		head = new Text("HOARD", 90, 45, 40);
+		scoreText = new Text("0 Gold",80, 100, 40);
+		menuBtn = new util.Button(7, 180, 150, 50, new Sprite(Assets.images.button), "Menu", menu, 27);
 
-		subHead = new FlxText(0, 0, 320);
-		subHead.text = "GROW YOUR";
-		subHead.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		subHead.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(subHead);
-
-		head = new FlxText(0, 35, 320);
-		head.text = "HOARD";
-		head.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		head.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		head.scale.set(2, 2);
-		add(head);
-
-		scoreText = new FlxText(0, 73, 320);
-		scoreText.text = "0 Gold";
-		scoreText.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		scoreText.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(scoreText);
-
-		menuBtn = new util.Button(7, 180, 150, 50, AssetPaths.button__png, "Menu", menu, 27);
-		add(menuBtn);
-
-		creditsBtn = new util.Button(165, 180, 150, 50, AssetPaths.button__png, "Credits", credits, 27);
-		add(creditsBtn);
-
-		createWalls(0, -125, 320, 175);
+		creditsBtn = new util.Button(165, 180, 150, 50, new Sprite(Assets.images.button), "Credits", credits, 27);
 	}
 
-	public function menu(sprite:FlxSprite)
+	public function menu(?b:Int,?x:Int,?y:Int)
 	{
-		FlxG.switchState(new states.MenuState());
+		Project.the.changeState(new MenuState());
 	}
 
-	public function credits(sprite:FlxSprite)
+	public function credits(?b:Int,?x:Int,?y:Int)
 	{
-		FlxG.switchState(new states.CreditsState());
+		//FlxG.switchState(new CreditsState());
 	}
 
-	override public function update():Void
+	public override function update():Void
 	{
-		super.update();
-
-		if (FlxRandom.chanceRoll(1) && ogreSurvivors > 0)
+		var g:Goblin;
+		if (Math.random() <= .005 && ogreSurvivors > 0)
 		{
 			ogreSurvivors -= 1;
-			add(new Ogre(270, 112));
-		}
-		
-		if (FlxRandom.chanceRoll(1) && goblinSurvivors > 0)
-		{
-			goblinSurvivors -= 1;
-			add(new Goblin(270, 156));
+			g = new Goblin(Assets.images.ogre, 32, 64, 0, 113, 5, 1,.3);
+			Scene.the.addHero(g);
 		}
 
-		if (FlxRandom.chanceRoll(1) && greedyGoblinSurvivors > 0)
+		if (Math.random() <= .005 && greedyGoblinSurvivors > 0)
 		{
 			greedyGoblinSurvivors -= 1;
-			add(new GreedyGoblin(270, 156));
+			g = new Goblin(Assets.images.goblinbigbag, 20, 20,0, 153, 1, 3, .3, "greedy_goblin",null,new Animation([3,4,5,4], 5));
+			Scene.the.addHero(g);
+		}
+		
+		if (Math.random() <= .03 && goblinSurvivors > 0)
+		{
+			goblinSurvivors -= 1;
+			g = new Goblin(Assets.images.goblin1, 20, 20, 0, 153, 1, 1,1);
+			Scene.the.addHero(g);
 		}
 
 
-		if (score < Reg.score)
+		if (score < Reg.score && scoreText != null)
 		{
 			score++;
-			scoreText.text = score + " Gold";
-			//repl
-			if (score <= 50)
+			scoreText.content = score+" Gold";
+			if(score<=50)
 			{
-				new actors.Coin(150 + FlxRandom.intRanged(-20, 20), -100);
+				coins.push(new Projectile(Assets.images.coin,8,8,150 + Math.round(Math.random()*250) - 125, -100,new Animation([0],0), 0, 0));
+				coins[coins.length-1].setScale(4);
 			}
+			Scene.the.addOther(coins[coins.length-1]);
 		}
 	}
 }

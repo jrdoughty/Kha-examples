@@ -7,7 +7,6 @@ class ButtonManager
 {
 
 	public static var the(get, null):ButtonManager;
-	private var buttons:Array<Button>;
 
 	private static function get_the()
 	{
@@ -20,20 +19,12 @@ class ButtonManager
 
 	public function new(?btns:Array<Button>)
 	{
-		if(btns == null)
-		{
-			buttons = Button.buttons;
-		}
-		else
-		{
-			buttons = btns;
-		}
 		Mouse.get().notify(down, up, move, scroll);
 	}
 
 	public function down(mButton:Int, x:Int, y:Int)
 	{
-		for(i in buttons)
+		for(i in Button.buttons)
 		{
 			if(i.background != null && i.background.x <= x &&i.background.x + i.background.width >= x && i.background.y <= y &&i.background.y + i.background.height >= y)
 			{

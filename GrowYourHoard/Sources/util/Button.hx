@@ -29,7 +29,7 @@ class Button
 
 	public function kill()
 	{
-		if(!background.removed)
+		if(!background.removed && background != null)
 		{
 			Scene.the.removeOther(background);
 		}

@@ -35,6 +35,7 @@ class PlayState extends BaseState
 	public var goblins:Array<Goblin> = [];
 	private var projectiles:Array<Projectile> = [];
 	private var fCount:Int = 0;
+	private var levelTimerFinished = false;
 
 	public function new()
 	{
@@ -66,7 +67,7 @@ class PlayState extends BaseState
 
 		Reg.level += 1;
 		levelTimer = new Timer((30 + Reg.level) * 1000);
-		levelTimer.run = function(){Project.the.changeState(new ShowHoardState());};
+		levelTimer.run = endLevel;
 
 		if (Reg.level > 3)
 		{
@@ -105,27 +106,25 @@ class PlayState extends BaseState
 	private function spawn()
 	{
 		spawnTimer.stop();
-		spawnTimer = new Timer(getSpawnTime());
-		spawnTimer.run = spawn;
-
+		if(!levelTimerFinished)
+		{
+			spawnTimer = new Timer(getSpawnTime());
+			spawnTimer.run = spawn;
+		}
 		var g:Goblin;
 
 		if (Reg.upgrades["greedy_goblin"]["number"] > 0 && Math.random() > 0.8)
 		{
-			g = new Goblin(Assets.images.goblinbigbag, 20, 20, 260, 190, 1, 3, .3, "greedy_goblin",null,new Animation([3,4,5,4], 5));
-			trace('greed');
+			g = new Goblin(Assets.images.goblinbigbag, 20, 20, 260, 190, 1, 3, -.3, "greedy_goblin",null,new Animation([3,4,5,4], 5));
 		}
 		else if (Reg.upgrades["ogre"]["number"] > 0 && Math.random() > 0.8)
 		{
-			g = new Goblin(Assets.images.ogre, 32, 64, 260, 148, 5, 1);
-			trace('ogre');
+			g = new Goblin(Assets.images.ogre, 32, 64, 260, 148, 5, 1, -.3, "ogre");
 		}
 		else
 		{
 			g = new Goblin(Assets.images.goblin1, 20, 20, 260, 190, 1, 1);
-			g.y = 190;
 		}
-		g.scaleX = -1;
 		g.x = 260;
 		goblins.push(g);
 		Scene.the.addHero(g);
@@ -166,9 +165,6 @@ class PlayState extends BaseState
 				goblins.remove(i);
 			}
 		}
-
-
-
 
 		var pToRemove = [];
 		var gToRemove = [];
@@ -248,5 +244,28 @@ class PlayState extends BaseState
 		spawnTimer.stop();
 		shootTimer.stop();
 		levelTimer.stop();
+	}
+
+	public function endLevel()
+	{
+		levelTimerFinished = true;
+		if(goblins.length == 0)
+		{
+			//levelTimer.stop();			
+			if(Reg.score > 99)
+			{
+				Project.the.changeState(new WinState());
+			}
+			else
+			{
+				Project.the.changeState(new ShowHoardState());
+			}
+		}
+		else
+		{
+			levelTimer.stop();
+			levelTimer = new Timer(1000);
+			levelTimer.run = endLevel;
+		}
 	}
 }

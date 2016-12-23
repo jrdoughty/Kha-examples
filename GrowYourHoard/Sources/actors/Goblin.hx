@@ -18,13 +18,16 @@ class Goblin extends Sprite
 	private var mainAnim:Animation;
 	private var moves:Bool = true;
 
-	public function new(image:Image, ?width:Int=0, ?height:Int,x:Float = 0, y:Float = 0, unitHealth:Float=1.0, value:Int = 1, speed:Float = .3, tag = 'goblin', ?anim:Animation,?tiredAnim:Animation)
+	public function new(image:Image, ?width:Int=0, ?height:Int,x:Float = 0, y:Float = 0, unitHealth:Float=1.0, value:Int = 1, speed:Float = -.3, tag = 'goblin', ?anim:Animation,?tiredAnim:Animation)
 	{
 		super(image, width, height);
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		scaleX = -1;
+		if(speed < 0)
+		{
+			scaleX = -1;
+		}
 		health = unitHealth;
 		this.value = value;
 		this.tag = tag;
@@ -55,7 +58,7 @@ class Goblin extends Sprite
 		}
 		if(moves)
 		{
-			x -= speed;
+			x += speed;
 		}
 		super.update();
 	}

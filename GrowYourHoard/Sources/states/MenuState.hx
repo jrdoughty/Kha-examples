@@ -52,13 +52,13 @@ class MenuState extends BaseState
 
 	}
 
-	public function play(b:Int,x:Int,y:Int)//sprite:FlxSprite = null)
+	public function play(b:Int,x:Int,y:Int)
 	{
 		Reg.reset();
 		Project.the.changeState(new PlayState());
 	}
 
-	public function help(b:Int,x:Int,y:Int)//sprite:FlxSprite = null)
+	public function help(b:Int,x:Int,y:Int)
 	{
 		//FlxG.switchState(new states.HelpState());
 	}
