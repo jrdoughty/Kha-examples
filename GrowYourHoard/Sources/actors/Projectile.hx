@@ -14,9 +14,11 @@ class Projectile extends Sprite
 {
 	public var point:ProjectilePoint;
 	public var deadAnim:Animation;
-	public function new(image:Image, width:Int, height:Int, spawnX:Float, spawnY:Float, deadAnim:Animation,?speedX:Float, ?speedY:Float)
+	public var dmg:Int;
+	public function new(image:Image, width:Int, height:Int, spawnX:Float, spawnY:Float, deadAnim:Animation,?speedX:Float, ?speedY:Float,?dmg:Int = 1)
 	{
 		super(image, width, height);
+		this.dmg = dmg;
 		if(image.width != width || image.height != height)
 		{
 			setAnimation(Animation.createRange(0,Math.floor(image.width/width * image.height/height)-1, 5));

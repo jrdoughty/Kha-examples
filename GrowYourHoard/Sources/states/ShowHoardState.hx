@@ -18,10 +18,7 @@ class ShowHoardState extends BaseState
 {
 
 	var score:Int = 0;
-	var subHead:Text;
-	var head:Text;
 	var scoreText:Text;
-	var buyBtn:util.Button;
 	var coins:Array<Projectile> = [];
 
 	public function new()
@@ -31,11 +28,11 @@ class ShowHoardState extends BaseState
 	public override function init():Void 
 	{
 		Scene.the.addOther(new Sprite(Assets.images.menubackground));
-		subHead = new Text("GROW YOUR", 42, 0, 40);
-		head = new Text("HOARD", 90, 45, 40);
+		new Text("GROW YOUR", 42, 0, 40);
+		new Text("HOARD", 90, 45, 40);
 		scoreText = new Text("0 Gold",80, 100, 40);
 		Scene.the.addOther(new Goblin(Assets.images.goblin1,20 ,20 ,250, 125,5,0,-.3));
-		buyBtn = new Button(25, 155, 275, 80, new Sprite(Assets.images.button), "Invest", buy);
+		new Button(25, 155, 275, 80, new Sprite(Assets.images.button), "Invest", buy);
 	}
 	
 	public function buy(?b:Int,?x:Int,?y:Int):Void
@@ -46,10 +43,7 @@ class ShowHoardState extends BaseState
 	public override function kill():Void
 	{
 		super.kill();
-		subHead = null;
-		head = null;
 		scoreText = null;
-		buyBtn = null;
 		for(i in coins)
 		{
 			i.kill();

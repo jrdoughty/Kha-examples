@@ -13,12 +13,8 @@ class WinState extends BaseState
 {
 
 	var score:Int = 0;
-	var subHead:Text;
-	var head:Text;
 	var scoreText:Text;
 	var coins:Array<Projectile> = [];
-	var menuBtn:Button;
-	var creditsBtn:Button;
 	var goblinSurvivors:Int;
 	var greedyGoblinSurvivors:Int;
 	var ogreSurvivors:Int;
@@ -34,12 +30,12 @@ class WinState extends BaseState
 		ogreSurvivors = Reg.counters["ogres_launched"] - Reg.counters["ogres_harmed"];
 
 		Scene.the.addOther(new Sprite(Assets.images.menubackground));
-		subHead = new Text("GROW YOUR", 42, 0, 40);
-		head = new Text("HOARD", 90, 45, 40);
-		scoreText = new Text("0 Gold",80, 100, 40);
-		menuBtn = new util.Button(7, 180, 150, 50, new Sprite(Assets.images.button), "Menu", menu, 27);
+		new Text("GROW YOUR", 42, 0, 40);
+		new Text("HOARD", 90, 45, 40);
+		scoreText = new Text("0 Gold",61, 100, 40);
+		new util.Button(7, 180, 150, 50, new Sprite(Assets.images.button), "Menu", menu, 27);
 
-		creditsBtn = new util.Button(165, 180, 150, 50, new Sprite(Assets.images.button), "Credits", credits, 27);
+		new util.Button(165, 180, 150, 50, new Sprite(Assets.images.button), "Credits", credits, 27);
 	}
 
 	public function menu(?b:Int,?x:Int,?y:Int)
@@ -49,7 +45,7 @@ class WinState extends BaseState
 
 	public function credits(?b:Int,?x:Int,?y:Int)
 	{
-		//FlxG.switchState(new CreditsState());
+		Project.the.changeState(new CreditsState());
 	}
 
 	public override function update():Void
@@ -81,12 +77,21 @@ class WinState extends BaseState
 		{
 			score++;
 			scoreText.content = score+" Gold";
-			if(score<=50)
-			{
+			//if(score<=100)
+			//{
 				coins.push(new Projectile(Assets.images.coin,8,8,150 + Math.round(Math.random()*250) - 125, -100,new Animation([0],0), 0, 0));
 				coins[coins.length-1].setScale(4);
-			}
+			//}
 			Scene.the.addOther(coins[coins.length-1]);
+		}
+		for(i in coins)
+		{
+			if(i.y > Reg.gameHeight)
+			{
+				i.kill();
+				Scene.the.removeOther(i);
+				coins.remove(i);
+			}
 		}
 	}
 }

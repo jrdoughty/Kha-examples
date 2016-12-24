@@ -15,26 +15,28 @@ import actors.Player;
 
 class PlayState extends BaseState
 {	
-	private var background:Sprite;
 	private var castle:Sprite;
 	private var shieldSprite:Sprite;
 	private var ogreSprite:Sprite;
 	private var greedySprite:Sprite;
+
 	private var shieldCountText:Text;
 	private var greedCountText:Text;
 	private var ogreCountText:Text;
 	private var scoreText:Text;
+
 	private var spawnTimer:Timer;
 	private var shootTimer:Timer;
 	private var levelTimer:Timer;
 	private var soldierTimer:Timer;
+
 	private var player:Player;
 	private var floorY:Float = 206;
 	private var arrowSpawnX:Float = 250;
 	private var arrowSpawnY:Float = 75;
 	public var goblins:Array<Goblin> = [];
 	private var projectiles:Array<Projectile> = [];
-	private var fCount:Int = 0;
+
 	private var levelTimerFinished = false;
 
 	public function new()
@@ -43,10 +45,9 @@ class PlayState extends BaseState
 	
 	public override function init()
 	{
-		background = new Sprite(Assets.images.background);
-		background.x = 0;
-		background.y = 0;
-		Scene.the.addOther(background);
+		Reg.inLevel = true;
+
+		Scene.the.addOther(new Sprite(Assets.images.background));
 		
 		castle = new Sprite(Assets.images.castle);
 		castle.x = 250; 
@@ -147,7 +148,7 @@ class PlayState extends BaseState
 		else
 		{
 			trace('axe');
-			projectiles.push(new Projectile(Assets.images.axe, 8, 8, arrowSpawnX, arrowSpawnY, new Animation([1],0)));
+			projectiles.push(new Projectile(Assets.images.axe, 8, 8, arrowSpawnX, arrowSpawnY, new Animation([1],0), null, null, 3));
 			Scene.the.addProjectile(projectiles[projectiles.length - 1]);
 		}
 	}
@@ -158,10 +159,8 @@ class PlayState extends BaseState
 		for(i in goblins)
 		{
 			
-			if (i.x < 0 - i.width)
+			if (!i.alive)
 			{
-				Reg.score += i.getScore();
-				i.kill();
 				goblins.remove(i);
 			}
 		}
@@ -197,7 +196,7 @@ class PlayState extends BaseState
 					if(i.point.composite.particles[0].pos.x >= j.x && i.point.composite.particles[0].pos.x <= j.x + Math.abs(j.width) &&
 					i.point.composite.particles[0].pos.y >= j.y && i.point.composite.particles[0].pos.y <= j.y + j.height )
 					{
-						j.kill();
+						j.damage(i.dmg);
 						Scene.the.removeHero(j);
 						gToRemove.push(j);
 						i.kill();
@@ -229,6 +228,7 @@ class PlayState extends BaseState
 
 	public override function kill()
 	{
+		Reg.inLevel = false;
 		super.kill();
 		for(i in projectiles)
 		{
@@ -236,7 +236,6 @@ class PlayState extends BaseState
 		}
 		goblins = [];
 		projectiles = [];
-		background = null;
 		castle = null;
 		shieldSprite = null;
 		ogreSprite = null;

@@ -1,87 +1,42 @@
 package states;
 
-import flixel.FlxState;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.FlxG;
-import flixel.FlxSprite;
+import util.Text;
 import util.Button;
+import kha.Assets;
+import util.Button;
+import kha2d.Scene;
+import kha2d.Sprite;
 /**
  * ...
  * @author John Doughty
  */
-class CreditsState extends FlxState
+class CreditsState extends BaseState
 {
-	var subHead:FlxText;
-	var head:FlxText;
-	var john:FlxText;
-	var nick:FlxText;
-	var goblins:FlxText;
-	var greeds:FlxText;
-	var ogres:FlxText;
-	var extra:FlxText;
-	var menuBtn:util.Button;
 	
-	override public function create():Void 
+	
+	public function new()
 	{
-		super.create();
-		add(new FlxSprite(0, 0, AssetPaths.menubackground__png));
-
-		subHead = new FlxText(0, 0, 320);
-		subHead.text = "GROW YOUR";
-		subHead.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		subHead.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		subHead.scale.set(.5, .5);
-		add(subHead);
-
-		head = new FlxText(0, 20, 320);
-		head.text = "HOARD";
-		head.setFormat(AssetPaths.Our_Arcade_Games__ttf, 20, FlxColor.GOLDEN, "center");
-		head.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		add(head);
-
-		john = new FlxText(0, 80, 320);
-		john.text = "John Doughty Code and Art";
-		john.setFormat(AssetPaths.Our_Arcade_Games__ttf, 8, FlxColor.GOLDEN, "center");
-		john.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		john.scale.set(2, 2);
-		add(john);
-
-		nick = new FlxText(0, 55, 320);
-		nick.text = "Nicholas Cash Code";
-		nick.setFormat(AssetPaths.Our_Arcade_Games__ttf, 8, FlxColor.GOLDEN, "center");
-		nick.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-		nick.scale.set(2, 2);
-		add(nick);
-		if (Reg.counters["goblins_harmed"] + Reg.counters["greedy_goblins_harmed"] +Reg.counters["ogres_harmed"] > 0)
-		{
-			goblins = new FlxText(-3, 108, 320);
-			goblins.text = Reg.counters["goblins_harmed"] + " Goblins " + Reg.counters["greedy_goblins_harmed"] + " Greedy Goblins";
-			goblins.setFormat(AssetPaths.Our_Arcade_Games__ttf, 8, FlxColor.GOLDEN, "center");
-			goblins.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-			goblins.scale.set(2, 2);
-			add(goblins);
-
-			greeds = new FlxText(0, 133, 320);
-			greeds.text = "and " +Reg.counters["ogres_harmed"]+" Ogres were harmed";
-			greeds.setFormat(AssetPaths.Our_Arcade_Games__ttf, 8, FlxColor.GOLDEN, "center");
-			greeds.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-			greeds.scale.set(2, 2);
-			add(greeds);
-
-			ogres = new FlxText(0, 158, 320);
-			ogres.text = "growing your hoard";
-			ogres.setFormat(AssetPaths.Our_Arcade_Games__ttf, 8, FlxColor.GOLDEN, "center");
-			ogres.setBorderStyle(FlxText.BORDER_OUTLINE, FlxColor.BROWN, 1);
-			ogres.scale.set(2, 2);
-			add(ogres);
-		}
-		menuBtn = new util.Button(75, 180, 150, 50, AssetPaths.button__png, "Menu", menu, 27);
-		add(menuBtn);
 	}
 
-	public function menu(sprite:FlxSprite)
+	override public function init():Void 
 	{
-		FlxG.switchState(new MenuState());
+		Scene.the.addOther(new Sprite(Assets.images.menubackground));
+		new Text("GROW YOUR", 70, 0, 20);
+		new Text("HOARD", 90, 25, 20);
+		new Text("Nicholas Cash Code",55, 55, 16);
+		new Text("John Doughty Code and Art", 30, 80, 16);
+		if (Reg.counters["goblins_harmed"] + Reg.counters["greedy_goblins_harmed"] +Reg.counters["ogres_harmed"] > 0)
+		{
+			new Text(Reg.counters["goblins_harmed"] + " Goblins " + Reg.counters["greedy_goblins_harmed"] + " Greedy Goblins",10, 108, 16);
+			new Text("and " +Reg.counters["ogres_harmed"]+" Ogres were harmed", 30, 133, 16);
+			new Text("growing your hoard", 60, 158, 16);
+			
+		}
+		new util.Button(75, 180, 150, 50, new Sprite(Assets.images.button), "Menu", menu, 27);
+	}
+
+	public function menu(?b:Int,?x:Int,?y:Int)
+	{
+		Project.the.changeState(new MenuState());
 	}
 }

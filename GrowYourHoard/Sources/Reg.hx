@@ -11,14 +11,16 @@ class Reg
 	public static var gameWidth = 320; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight = 240; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	
+	public static var inLevel:Bool = false;
+
 	public static function reset():Void
 	{
-		Reg.score = 90;
+		Reg.score = 0;
 		Reg.level = 0;
 		Reg.counters = [
-			"goblins_launched"        => 100,
-			"greedy_goblins_launched" => 20,
-			"ogres_launched"          => 10,
+			"goblins_launched"        => 0,
+			"greedy_goblins_launched" => 0,
+			"ogres_launched"          => 0,
 			"goblins_harmed"        => 0,
 			"greedy_goblins_harmed" => 0,
 			"ogres_harmed"          => 0,
@@ -42,7 +44,7 @@ class Reg
 				"number" => 10
 			],
 			"large_shield" => [
-				"cost"   => 5,
+				"cost"   => 3,
 				"number" => 10
 			]
 		];

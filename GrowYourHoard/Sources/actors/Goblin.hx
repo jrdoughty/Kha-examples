@@ -3,12 +3,14 @@ package actors;
 import kha2d.Sprite;
 import kha.Image;
 import kha2d.Animation;
+import kha2d.Scene;
 /**
  * ...
  * @author John Doughty
  */
 class Goblin extends Sprite
 {
+	public var alive = true;
 	private var value:Int = 1;
 	private var startY:Float;
 	private var health:Float = 1;
@@ -60,17 +62,32 @@ class Goblin extends Sprite
 		{
 			x += speed;
 		}
+		if((x < 0 - width || x > Reg.gameWidth) && alive)
+		{
+			kill();
+		}
 		super.update();
 	}
 
 	public function kill():Void
 	{
-		Reg.upgrades[getUnitTag()]["number"] -= 1;
-		
-		if (this.x >= 0 - width)
+		if(Reg.inLevel)
 		{
-			Reg.counters[getUnitTag() + "s_harmed"] += 1;
+			if (x >= 0 - width && x < Reg.gameWidth)
+			{
+				Reg.upgrades[getUnitTag()]["number"] -= 1;
+				Reg.counters[getUnitTag() + "s_harmed"] += 1;
+				trace(getUnitTag() + " number: "+Reg.upgrades[getUnitTag()]["number"]);
+				trace(getUnitTag() + " harmed: "+Reg.counters[getUnitTag() + "s_harmed"]);
+			} 
+			else if(alive)
+			{
+				
+				Reg.score += getScore();
+			}
 		}
+		Scene.the.removeHero(this);
+		alive = false;
 	}
 
 	public function getScore():Int
@@ -93,5 +110,13 @@ class Goblin extends Sprite
 	public function getUnitTag()
 	{
 		return tag;
+	}
+	public function damage(dmg:Int)
+	{
+		health -= dmg;
+		if(health <= 0)
+		{
+			kill();
+		}
 	}
 }

@@ -3,7 +3,6 @@ package;
 import kha.Framebuffer;
 import kha2d.Scene;
 import states.IState;
-import states.MenuState;
 import kha.Assets;
 import util.Text;
 import Reg;
@@ -55,7 +54,7 @@ class Project
 		{
 			i.render(framebuffer.g2);
 		}
-		//verletRenderer.renderAll(framebuffer.g2);
+		verletRenderer.renderAll(framebuffer.g2);
 		framebuffer.g2.end();
 	}
 
