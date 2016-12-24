@@ -156,6 +156,8 @@ class PlayState extends BaseState
 
 	public override function update()
 	{
+		var pointX;
+		var pointY;
 		for(i in goblins)
 		{
 			
@@ -169,17 +171,10 @@ class PlayState extends BaseState
 		var gToRemove = [];
 		for(i in projectiles)
 		{
-			if(i.y >= floorY)
-			{
-				if(i.point != null)
-				{
-					i.point.destroy();
-					i.point = null;
-				}
-				i.setAnimation(i.deadAnim);
-			}
-			else if (i.point.composite.particles[0].pos.x >= player.x && i.point.composite.particles[0].pos.x <= player.x + Math.abs(player.width) &&
-					i.point.composite.particles[0].pos.y >= player.y && i.point.composite.particles[0].pos.y <= player.y + player.height )
+			pointX = i.point.composite.particles[0].pos.x;
+			pointY = i.point.composite.particles[0].pos.y;
+			if (pointX >= player.x && pointX <= player.x + Math.abs(player.width) &&
+							pointY >= player.y && pointY <= player.y + player.height )
 			{
 				if(i.point != null)
 				{
@@ -189,21 +184,44 @@ class PlayState extends BaseState
 				Scene.the.removeProjectile(i);
 				pToRemove.push(i);
 			}
-			else
+		}
+
+		for(i in pToRemove)
+		{
+			projectiles.remove(i);
+		}
+
+		for(i in projectiles)
+		{
+			for(j in goblins)
 			{
-				for(j in goblins)
+				pointX = i.point.composite.particles[0].pos.x;
+				pointY = i.point.composite.particles[0].pos.y;
+
+				if(j.width < 0 && pointX <= j.x && pointX >= j.x + j.width &&
+				pointY >= j.y && pointY <= j.y + j.height )
 				{
-					if(i.point.composite.particles[0].pos.x >= j.x && i.point.composite.particles[0].pos.x <= j.x + Math.abs(j.width) &&
-					i.point.composite.particles[0].pos.y >= j.y && i.point.composite.particles[0].pos.y <= j.y + j.height )
+					trace('killing');
+					j.damage(i.dmg);
+					Scene.the.removeHero(j);
+					gToRemove.push(j);
+					i.kill();
+					Scene.the.removeProjectile(i);
+					pToRemove.push(i);
+					break;
+				}
+			}
+			if(pToRemove.indexOf(i) == -1)
+			{
+				if(i.y >= floorY)
+				{
+					if(i.point != null)
 					{
-						j.damage(i.dmg);
-						Scene.the.removeHero(j);
-						gToRemove.push(j);
-						i.kill();
-						Scene.the.removeProjectile(i);
-						pToRemove.push(i);
-						break;
+						i.point.destroy();
+						i.point = null;
 					}
+					i.setAnimation(i.deadAnim);
+					pToRemove.push(i);
 				}
 			}
 		}
