@@ -143,7 +143,7 @@ class HoardState extends BaseState
 			"",
 			"1",
 			"1",
-			"5"
+			"3"
 		];
 
 		for (buttonName in buttons.keys())
