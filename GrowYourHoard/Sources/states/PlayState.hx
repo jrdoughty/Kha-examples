@@ -55,7 +55,14 @@ class PlayState extends BaseState
 		Scene.the.addOther(castle);
 		createCounts();
 
-		player = new Player(Assets.images.shield,20,25,0,185);
+		if(Reg.upgrades["large_shield"]["number"] > 0)
+		{
+			player = new Player(Assets.images.shieldbigger,30,25,0,185);
+		}
+		else
+		{
+			player = new Player(Assets.images.shield,20,25,0,185);
+		}
 		Scene.the.addHero(player);
 
 		spawnTimer = new Timer(getSpawnTime());
@@ -203,8 +210,11 @@ class PlayState extends BaseState
 				{
 					trace('killing');
 					j.damage(i.dmg);
-					Scene.the.removeHero(j);
-					gToRemove.push(j);
+					if(!j.alive)
+					{
+						Scene.the.removeHero(j);
+						gToRemove.push(j);
+					}
 					i.kill();
 					Scene.the.removeProjectile(i);
 					pToRemove.push(i);

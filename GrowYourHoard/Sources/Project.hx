@@ -54,7 +54,7 @@ class Project
 		{
 			i.render(framebuffer.g2);
 		}
-		verletRenderer.renderAll(framebuffer.g2);
+		//verletRenderer.renderAll(framebuffer.g2);
 		framebuffer.g2.end();
 	}
 

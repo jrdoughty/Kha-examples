@@ -73,13 +73,11 @@ class Goblin extends Sprite
 	{
 		if(Reg.inLevel)
 		{
-			if (x >= 0 - width && x < Reg.gameWidth)
+			if (x >= 0 + Math.abs(width) && x < Reg.gameWidth)
 			{
 				Reg.upgrades[getUnitTag()]["number"] -= 1;
 				Reg.counters[getUnitTag() + "s_harmed"] += 1;
-				trace(getUnitTag() + " number: "+Reg.upgrades[getUnitTag()]["number"]);
-				trace(getUnitTag() + " harmed: "+Reg.counters[getUnitTag() + "s_harmed"]);
-			} 
+				} 
 			else if(alive)
 			{
 				
@@ -92,14 +90,7 @@ class Goblin extends Sprite
 
 	public function getScore():Int
 	{
-		//if (Type.getClass(FlxG.state) == PlayState)
-		{
-			return value;
-		}
-		//else
-		{
-			return 0;
-		}
+		return value;
 	}
 
 	private function getTargetY()

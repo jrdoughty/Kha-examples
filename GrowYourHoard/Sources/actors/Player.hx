@@ -21,7 +21,7 @@ class Player extends Sprite
 		this.y = y;
 		Keyboard.get().notify(keyDown, keyUp);
 		idle = new Animation([0], 12);
-		mainAnim = new Animation([0,1,2], 5);
+		mainAnim = new Animation([0,1,2,1], 5);
 		charge = new Animation([3],12);
 	}
 
@@ -64,11 +64,11 @@ class Player extends Sprite
 	public override function update ()
 	{
 		super.update();
-		if(left)
+		if(left && x > 0)
 		{
 			x -= 2;
 		}
-		else if(right)
+		else if(right && x < Reg.gameWidth/4*3)
 		{
 			x += 2;
 		}
