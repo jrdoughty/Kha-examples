@@ -166,8 +166,7 @@ class PlayState extends BaseState
 		var pointX;
 		var pointY;
 		for(i in goblins)
-		{
-			
+		{	
 			if (!i.alive)
 			{
 				goblins.remove(i);
@@ -188,7 +187,8 @@ class PlayState extends BaseState
 					i.point.destroy();
 					i.point = null;
 				}
-				Scene.the.removeProjectile(i);
+				//Scene.the.removeProjectile(i);
+				player.spriteCache.addSprite(i);
 				pToRemove.push(i);
 			}
 		}

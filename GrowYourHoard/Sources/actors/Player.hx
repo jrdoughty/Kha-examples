@@ -8,6 +8,7 @@ import kha2d.Animation;
 
 class Player extends Sprite
 {
+	public var spriteCache:SpriteCache;
 	var left:Bool = false;
 	var right:Bool = false;
 	var idle:Animation;
@@ -23,6 +24,7 @@ class Player extends Sprite
 		idle = new Animation([0], 12);
 		mainAnim = new Animation([0,1,2,1], 5);
 		charge = new Animation([3],12);
+		spriteCache = new SpriteCache(this);
 	}
 
 	public function keyDown(key:Key, chars:String)
@@ -76,5 +78,6 @@ class Player extends Sprite
 		{
 			setAnimation(idle);
 		}
+		spriteCache.update();
 	}
 }
