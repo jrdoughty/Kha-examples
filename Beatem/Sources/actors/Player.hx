@@ -65,24 +65,30 @@ class Player extends Object
 		motion.acceleration.x = 0;	
 		motion.acceleration.y = 0;	
 
-		if (Keyboard.isHeld('a') || Keyboard.isHeld('left') || GamePads.gamePads[0].leftAnalog.x < -.5)
+		if (Keyboard.isHeld('a') || Keyboard.isHeld('left') || GamePads.get(0).leftAnalog.x < -.5 || GamePads.get(0).buttonsHeld.get(GamePads.DLEFT))
 		{
 			motion.acceleration.x = -0.7;
 			sprite.flip.x = true;	
 		}            
-        else if (Keyboard.isHeld('d') || Keyboard.isHeld('right') || GamePads.gamePads[0].leftAnalog.x > .5)
+        else if (Keyboard.isHeld('d') || Keyboard.isHeld('right') || GamePads.get(0).leftAnalog.x > .5 || GamePads.get(0).buttonsHeld.get(GamePads.DRIGHT))
 		{		
 			motion.acceleration.x = 0.7;
 			sprite.flip.x = false;
 		}
 
-		if (Keyboard.isHeld('s') || Keyboard.isHeld('down') || GamePads.gamePads[0].leftAnalog.y < -.5)
+		if (Keyboard.isHeld('s') || Keyboard.isHeld('down') || GamePads.get(0).leftAnalog.y < -.5 || GamePads.get(0).buttonsHeld.get(GamePads.DDOWN))
 		{
 			motion.acceleration.y = 0.7;
 		}            
-        else if (Keyboard.isHeld('w') || Keyboard.isHeld('up') || GamePads.gamePads[0].leftAnalog.y > .5)
+        else if (Keyboard.isHeld('w') || Keyboard.isHeld('up') || GamePads.get(0).leftAnalog.y > .5 || GamePads.get(0).buttonsHeld.get(GamePads.DUP))
 		{		
 			motion.acceleration.y = -0.7;
+		}
+
+		if(Math.abs(motion.acceleration.y) > 0 && Math.abs(motion.acceleration.x) > 0)
+		{
+			motion.acceleration.y *= Math.sqrt(2);
+			motion.acceleration.x *= Math.sqrt(2);
 		}
 
 		body.moveBy(motion.velocity.x, motion.velocity.y, 'collision');
