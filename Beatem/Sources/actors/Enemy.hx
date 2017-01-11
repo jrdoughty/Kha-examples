@@ -19,11 +19,11 @@ class Enemy extends Actor
 	{
 		super(x, y, i, w, h);
 		speed = .5;
-		kha.Scheduler.addTimeTask(move,0,.25);
-		move();
+		kha.Scheduler.addTimeTask(startMove,0,.25);
+		startMove();
 	}
 
-	public function move()
+	public function startMove()
 	{
 		xAxis = 0;
 		yAxis = 0;
