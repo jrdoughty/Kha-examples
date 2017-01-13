@@ -24,13 +24,13 @@ class Actor extends Object implements TwoD
 	{
 		super(x, y);
 
-		var regions = Atlas.createRegionsFromAsset(i, w, h);
+		var regions = Atlas.createRegionList(i, w, h);
 		
 		sprite = new Sprite(regions[0]);
 		graphic = sprite;
 		setSizeAuto();
 
-		body = new Hitbox(this, 'play', null, 'collision');
+		body = new Hitbox(this, null, 'collision');
 		
 		setupAnimations(regions);
 		
@@ -102,7 +102,7 @@ class Actor extends Object implements TwoD
 		super.destroy();
 		screen.remove(this);
 		active = false;
-		body.destroy('play','collision');
+		body.destroy();
 	}
 }
 

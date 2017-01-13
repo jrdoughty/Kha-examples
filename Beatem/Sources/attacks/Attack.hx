@@ -18,7 +18,7 @@ class Attack extends Object
 
 		width = twoDObject.width;
 		height = twoDObject.height;
-		hitbox = new Hitbox(this,'play', null, 'collision');
+		hitbox = new Hitbox(this, null, 'collision');
 		var d = direction.toLowerCase();
 		sdg.Sdg.screen.add(this);
 		screen = sdg.Sdg.screen;
@@ -38,7 +38,7 @@ class Attack extends Object
 	{
 		screen.remove(this);
 		active = false;
-		hitbox.destroy('play','collision');
+		hitbox.destroy();
 	}
 
 	public override function moveCollideX(object:Object):Bool
