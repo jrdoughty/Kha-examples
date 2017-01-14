@@ -8,16 +8,16 @@ class Attack extends Object
 {
 	var hitbox:Hitbox;
 	var dmg:Int;
-	public function new (twoDObject:Actor, direction:String)
+	public function new (actor:Actor, direction:String)
 	{
 		super();
-		dmg = twoDObject.dmg;
-		x = twoDObject.x;
-		y = twoDObject.y;
+		dmg = actor.dmg;
+		x = actor.x;
+		y = actor.y;
 
 
-		width = twoDObject.width;
-		height = twoDObject.height;
+		width = actor.width;
+		height = actor.height;
 		hitbox = new Hitbox(this, null, 'collision');
 		var d = direction.toLowerCase();
 		sdg.Sdg.screen.add(this);
