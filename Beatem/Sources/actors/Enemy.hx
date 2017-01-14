@@ -1,19 +1,13 @@
 package actors;
-import sdg.Object;
 import kha.Image;
-import sdg.atlas.Atlas;
-import sdg.graphics.Sprite;
-import sdg.atlas.Region;
-import sdg.components.Motion;
-import sdg.components.Animator;
-import sdg.collision.Hitbox;
-
+import attacks.Attack;
 
 class Enemy extends Actor
 {
 
 	var xAxis:Int;
 	var yAxis:Int;
+	var attacking:Bool = false;
 
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
@@ -25,6 +19,8 @@ class Enemy extends Actor
 
 	public function startMove()
 	{
+		var didMove:Bool = false;
+		attacking = false;
 		xAxis = 0;
 		yAxis = 0;
 		if(Math.random()>=.85)
@@ -37,6 +33,7 @@ class Enemy extends Actor
 			{
 				xAxis = 1;
 			}
+			didMove = true;
 		}
 		if(Math.random() >=.85)
 		{
@@ -48,11 +45,18 @@ class Enemy extends Actor
 			{
 				yAxis = 1;
 			}
+			didMove = true;
+		}
+		if(!didMove)
+		{
+			attacking = true;	
+			new Attack(this, sprite.flip.x?'left':'right');
 		}
 	}
 
 	public override function update()
 	{
+		super.update();
 
 		motion.acceleration.x = 0;	
 		motion.acceleration.y = 0;	
@@ -61,7 +65,20 @@ class Enemy extends Actor
 		motion.acceleration.y = speed * yAxis;
 
 		sprite.flip.x = xAxis < 0;	
-		super.update();
+		if (attacking)	
+		{	
+			if(animator.nameAnim != 'attack')
+				animator.play('attack', false);					
+		}
+		else if ((motion.velocity.x != 0 || motion.velocity.y != 0) && animator.nameAnim != 'run')	
+		{		
+			animator.play('run');					
+		}
+		else if (motion.velocity.x == 0 && motion.velocity.y == 0 && animator.nameAnim != 'idle')		
+		{
+			animator.play('idle');	
+		}
+		move();
 	}	
 }
 

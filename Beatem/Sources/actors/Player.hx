@@ -20,8 +20,8 @@ class Player extends Actor
 
 	public override function update()
 	{
-
-		bMove = true;
+		super.update();
+		var bMove = true;
 
 		if(Keyboard.isPressed(' '))
 		{
@@ -58,8 +58,16 @@ class Player extends Actor
 			{		
 				motion.acceleration.y = -speed;
 			}
+			move();
+			if ((motion.velocity.x != 0 || motion.velocity.y != 0) && animator.nameAnim != 'run')	
+			{		
+				animator.play('run');					
+			}
+			else if (motion.velocity.x == 0 && motion.velocity.y == 0 && animator.nameAnim != 'idle')		
+			{
+				animator.play('idle');	
+			}
 		}
-		super.update();
 	}
 }
 

@@ -18,7 +18,6 @@ class Actor extends Object implements TwoD
 	var motion:Motion;
 	var animator:Animator;
 	var body:Hitbox;
-	var bMove = true;
 
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
@@ -69,33 +68,22 @@ class Actor extends Object implements TwoD
 	
 	public override function update()
 	{
-		if(health > 0)
-		{
-			super.update();
-			if(bMove)
-			{
-				if(Math.abs(motion.acceleration.y) > 0 && Math.abs(motion.acceleration.x) > 0)
-				{
-					motion.acceleration.y *= Math.sqrt(2);
-					motion.acceleration.x *= Math.sqrt(2);
-				}
-
-				body.moveBy(motion.velocity.x, motion.velocity.y, 'collision');
-
-				if ((motion.velocity.x != 0 || motion.velocity.y != 0) && animator.nameAnim != 'run')	
-				{		
-					animator.play('run');					
-				}
-				else if (motion.velocity.x == 0 && motion.velocity.y == 0 && animator.nameAnim != 'idle')		
-				{
-					animator.play('idle');	
-				}
-			}
-		}
-		else
+		if(health <= 0)
 		{
 			destroy();
 		}
+		super.update();
+	}
+
+	private function move()
+	{
+		if(Math.abs(motion.acceleration.y) > 0 && Math.abs(motion.acceleration.x) > 0)
+		{
+			motion.acceleration.y *= Math.sqrt(2);
+			motion.acceleration.x *= Math.sqrt(2);
+		}
+
+		body.moveBy(motion.velocity.x, motion.velocity.y, 'collision');
 	}
 	public override function destroy()
 	{
