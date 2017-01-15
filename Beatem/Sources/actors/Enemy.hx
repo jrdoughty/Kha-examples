@@ -7,7 +7,7 @@ class Enemy extends Actor
 
 	var xAxis:Int;
 	var yAxis:Int;
-	var attacking:Bool = false;
+	var bAttacking:Bool = false;
 
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
@@ -20,7 +20,7 @@ class Enemy extends Actor
 	public function startMove()
 	{
 		var didMove:Bool = false;
-		attacking = false;
+		bAttacking = false;
 		xAxis = 0;
 		yAxis = 0;
 		if(Math.random()>=.85)
@@ -49,7 +49,7 @@ class Enemy extends Actor
 		}
 		if(!didMove)
 		{
-			attacking = true;	
+			bAttacking = true;	
 			new Attack(this, sprite.flip.x?'left':'right');
 		}
 	}
@@ -65,7 +65,7 @@ class Enemy extends Actor
 		motion.acceleration.y = speed * yAxis;
 
 		sprite.flip.x = xAxis < 0;	
-		if (attacking)	
+		if (bAttacking)	
 		{	
 			if(animator.nameAnim != 'attack')
 				animator.play('attack', false);					

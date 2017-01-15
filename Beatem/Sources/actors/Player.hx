@@ -11,11 +11,14 @@ import attacks.Attack;
 class Player extends Actor
 {
 
+	public static var players:Array<Player> = [];
+
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
 		super(x, y, i, w, h);
 		dmg = 2;
 		speed = .7;
+		players.push(this);
 	}
 
 	public override function update()
@@ -58,7 +61,6 @@ class Player extends Actor
 			{		
 				motion.acceleration.y = -speed;
 			}
-			move();
 			if ((motion.velocity.x != 0 || motion.velocity.y != 0) && animator.nameAnim != 'run')	
 			{		
 				animator.play('run');					
@@ -67,6 +69,7 @@ class Player extends Actor
 			{
 				animator.play('idle');	
 			}
+			move();
 		}
 	}
 }

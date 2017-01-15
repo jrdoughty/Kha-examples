@@ -11,6 +11,7 @@ import sdg.collision.Hitbox;
 
 class Actor extends Object implements TwoD
 {
+	public static var actors:Array<Actor> = [];
 	public var dmg:Int = 1;
 	public var health:Int = 10;
 	var speed:Float;
@@ -39,6 +40,8 @@ class Actor extends Object implements TwoD
 		motion.maxVelocity.x = 3;
 		motion.maxVelocity.y = 3;
 		addComponent(motion);
+
+		actors.push(this);
 	}
 
 
