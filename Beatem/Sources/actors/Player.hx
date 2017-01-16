@@ -26,12 +26,15 @@ class Player extends Actor
 		super.update();
 		var bMove = true;
 
-		if(Keyboard.isPressed(' '))
+		if(!active)//failsafe...
+			return;
+
+		if(Keyboard.isPressed(' ') || GamePads.get(0).buttonsPressed[GamePads.AX])
 		{
 			new Attack(this, sprite.flip.x?'left':'right');
 		}
 
-		if(Keyboard.isHeld(' '))
+		if(Keyboard.isHeld(' ') || GamePads.get(0).buttonsHeld[GamePads.AX])
 		{
 			bMove = false;
 			if(animator.nameAnim != 'attack')
@@ -71,6 +74,12 @@ class Player extends Actor
 			}
 			move();
 		}
+	}
+
+	public override function destroy()
+	{
+		super.destroy();
+		players.remove(this);
 	}
 }
 

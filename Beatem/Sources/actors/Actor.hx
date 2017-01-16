@@ -13,7 +13,7 @@ class Actor extends Object implements TwoD
 {
 	public static var actors:Array<Actor> = [];
 	public var dmg:Int = 1;
-	public var health:Int = 10;
+	public var health:Int = 5;
 	var speed:Float;
 	var sprite:Sprite;	
 	var motion:Motion;
@@ -94,6 +94,7 @@ class Actor extends Object implements TwoD
 		screen.remove(this);
 		active = false;
 		body.destroy();
+		actors.remove(this);
 	}
 }
 

@@ -1,6 +1,8 @@
 package actors;
 import kha.Image;
+import sdg.Object;
 import attacks.Attack;
+import kha.Scheduler;
 enum EnemyState
 {
 	INITIALIZING;
@@ -20,11 +22,13 @@ class EnemyAI extends Actor
 	var statesMap:Map<EnemyState, Void->Void> = new Map<EnemyState, Void->Void>();
 	var target:Player = null;
 	var viewDist:Int = 100;
+	var attackDist:Int = 32;
+	var coolingDown:Bool = false;
 
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
 		super(x, y, i, w, h);
-		speed = .5;
+		speed = 3;
 		
 		statesMap.set(IDLE, idle);
 		statesMap.set(SAWPLAYER, sawPlayer);
@@ -39,58 +43,105 @@ class EnemyAI extends Actor
 	public override function update()
 	{
 		super.update();
-
-		statesMap[currentState]();
-		motion.acceleration.x = 0;	
-		motion.acceleration.y = 0;	
-
-		motion.acceleration.x = speed * xAxis;
-		motion.acceleration.y = speed * yAxis;
-
-		sprite.flip.x = xAxis < 0;	
-		if (bAttacking)	
-		{	
-			if(animator.nameAnim != 'attack')
-				animator.play('attack', false);					
-		}
-		else if ((motion.velocity.x != 0 || motion.velocity.y != 0) && animator.nameAnim != 'run')	
-		{		
-			animator.play('run');					
-		}
-		else if (motion.velocity.x == 0 && motion.velocity.y == 0 && animator.nameAnim != 'idle')		
-		{
-			animator.play('idle');	
-		}
-		move();
+		if(active)//failsafe
+			statesMap[currentState]();
 	}	
 	public function idle()
     {
+		if(animator.nameAnim != 'idle')
+			animator.play('idle');
 		for(i in Player.players)
 		{
-			if(Math.sqrt(Math.pow(Math.abs(i.x-this.x), 2) + Math.pow(Math.abs(i.y - this.y), 2)) < viewDist)
+			if(getDistTo(i) < viewDist)
 			{
 				target = i;
 				currentState = SAWPLAYER;
-				trace('stay on target');
 				break;
 			}
 		}
     }
     public function sawPlayer()
     {
-
+		currentState = CHASING;//going to do nothing with this for now. Could always do a '!' overhead later
     }
+
+	private function getDistTo(object:Object):Float
+	{
+		return Math.sqrt(Math.pow(Math.abs(object.x-x), 2) + Math.pow(Math.abs(object.y - y), 2));
+	}
+
     public function chasing()
     {
+		var targetX:Float;
+		if(target == null || !target.active)
+		{
+			target = null;
+			currentState = IDLE;
+		}
+		else if(getDistTo(target) <= attackDist)
+		{
+			currentState = ATTACKING;
+		}
+		else
+		{
+			if(animator.nameAnim != 'run')
+				animator.play('run');	
 
+			if(target.x > x)
+			{
+				targetX = target.x - width;
+				sprite.flip.x = false;
+			}
+			else
+			{
+				targetX = target.x + target.width;
+				sprite.flip.x = true;
+			}	
+			body.moveTowards(targetX, target.y, speed);
+		}
     }
     public function attacking()
     {
+		if(target == null || !target.active)
+		{
+			target = null;
+			currentState = IDLE;
+		}
+		else if(getDistTo(target) <= attackDist )
+		{
+			if(!coolingDown)
+			{
+				new Attack(this, sprite.flip.x?'left':'right');
+				animator.play('attack', false);	
 
-    }
+				coolingDown = true;
+				Scheduler.addTimeTask(coolDown,.5);
+
+				if(!target.active)
+					target = null;
+			}
+		}
+		else
+		{
+			currentState = CHASING;
+		}
+	}
+
+	private function coolDown()
+	{
+		coolingDown=false;
+	}
+
     public function fleeing()
     {
 
     }
+
+	public override function destroy()
+	{
+		super.destroy();
+		enemies.remove(this);
+		trace('dead');
+	}
 }
 
