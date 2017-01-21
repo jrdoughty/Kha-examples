@@ -22,7 +22,7 @@ class EnemyAI extends Actor
 	var statesMap:Map<EnemyState, Void->Void> = new Map<EnemyState, Void->Void>();
 	var target:Player = null;
 	var viewDist:Int = 100;
-	var attackDist:Int = 32;
+	var attackDist:Int;
 	var coolingDown:Bool = false;
 
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
@@ -36,7 +36,7 @@ class EnemyAI extends Actor
 		statesMap.set(ATTACKING, attacking);
 		statesMap.set(FLEEING, fleeing);
 		currentState = IDLE;
-
+		attackDist = Std.int(width/2);
 		enemies.push(this);
 	}
 
@@ -72,13 +72,13 @@ class EnemyAI extends Actor
 
     public function chasing()
     {
-		var targetX:Float;
+		var targetX:Float; 
 		if(target == null || !target.active)
 		{
 			target = null;
 			currentState = IDLE;
 		}
-		else if(getDistTo(target) <= attackDist)
+		else if(getDistTo(target) - (x<target.x?width:target.width) <= attackDist)
 		{
 			currentState = ATTACKING;
 		}
@@ -97,7 +97,9 @@ class EnemyAI extends Actor
 				targetX = target.x + target.width;
 				sprite.flip.x = true;
 			}	
-			body.moveTowards(targetX, target.y, speed);
+			
+			//body.moveBy(motion.velocity.x, motion.velocity.y, 'collision');
+			body.moveTowards(targetX,target.y,speed,'collision');
 		}
     }
     public function attacking()
@@ -107,7 +109,7 @@ class EnemyAI extends Actor
 			target = null;
 			currentState = IDLE;
 		}
-		else if(getDistTo(target) <= attackDist )
+		else if(getDistTo(target) - (x<target.x?width:target.width) <= attackDist )
 		{
 			if(!coolingDown)
 			{

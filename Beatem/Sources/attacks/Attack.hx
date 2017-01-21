@@ -8,15 +8,17 @@ class Attack extends Object
 {
 	var hitbox:Hitbox;
 	var dmg:Int;
+	var actorOfOrigin:Actor;
 	public function new (actor:Actor, direction:String)
 	{
 		super();
+		actorOfOrigin = actor;
 		dmg = actor.dmg;
 		x = actor.x;
 		y = actor.y;
+		
 
-
-		width = actor.width;
+		width = Std.int(actor.width/2);
 		height = actor.height;
 		hitbox = new Hitbox(this, null, 'collision');
 		var d = direction.toLowerCase();
@@ -43,7 +45,7 @@ class Attack extends Object
 
 	public override function moveCollideX(object:Object):Bool
 	{
-		if(Reflect.hasField(object,'health'))
+		if(Reflect.hasField(object,'health') && object != actorOfOrigin)
 		{
 			cast (object, Actor).health -= dmg;
 		}

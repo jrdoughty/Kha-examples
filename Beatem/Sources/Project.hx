@@ -10,7 +10,7 @@ import sdg.manager.GamePads;
 import sdg.Sdg;
 import sdg.atlas.Atlas;
 import sdg.collision.Hitbox;
-import screens.MenuScreen;
+import screens.PlayScreen;
 
 class Project {
 	public function new() {
@@ -19,7 +19,7 @@ class Project {
 
 	function assetsLoaded()
 	{
-		var engine = new Engine(320, 240);
+		var engine = new Engine(1024, 320);
 		engine.addManager(new Keyboard());
 		engine.addManager(new GamePads());
 
@@ -28,7 +28,7 @@ class Project {
 		// Initializes the collision system
 		Hitbox.init();
 
-		Sdg.addScreen('Menu', new MenuScreen(), true);
+		Sdg.addScreen('Play', new PlayScreen(), true);
 
 		System.notifyOnRender(engine.render);
 		Scheduler.addTimeTask(engine.update, 0, 1 / 60);
