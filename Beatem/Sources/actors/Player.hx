@@ -17,10 +17,11 @@ class Player extends Actor
 	public function new(x:Float, y:Float,i:Image,w:Int,h:Int)
 	{
 		super(x, y, i, w, h);
+		health = 10;
 		dmg = 2;
 		speed = .7;
 		players.push(this);
-		//playerIndex = players.length-1;
+		playerIndex = players.length-1;
 	}
 
 	public override function update()
