@@ -143,7 +143,6 @@ class EnemyAI extends Actor
 	{
 		super.destroy();
 		enemies.remove(this);
-		trace('dead');
 	}
 }
 

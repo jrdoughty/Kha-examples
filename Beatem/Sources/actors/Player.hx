@@ -18,7 +18,7 @@ class Player extends Actor
 	{
 		super(x, y, i, w, h);
 		health = 10;
-		dmg = 2;
+		dmg = 1;
 		speed = .7;
 		players.push(this);
 		playerIndex = players.length-1;

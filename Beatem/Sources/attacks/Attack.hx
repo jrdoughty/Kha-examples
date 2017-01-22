@@ -31,7 +31,7 @@ class Attack extends Object
 		}
 		else if(d == 'right')
 		{
-			x += width-1;
+			x += actor.width-1;
 			hitbox.moveBy(width + 1, 0, 'collision');
 		}
 		this.destroy();
