@@ -16,7 +16,6 @@ class Attack extends Object
 		dmg = actor.dmg;
 		x = actor.x;
 		y = actor.y;
-		
 
 		width = Std.int(actor.width/2);
 		height = actor.height;

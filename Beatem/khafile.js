@@ -3,6 +3,6 @@ project.addAssets('Assets/**');
 project.addSources('Sources');
 project.addLibrary('Sdg');
 project.addLibrary('haxe-format-tiled');
-project.windowOptions.width = 320;
-project.windowOptions.height = 240;
+project.windowOptions.width = 1024;
+project.windowOptions.height = 320;
 resolve(project);

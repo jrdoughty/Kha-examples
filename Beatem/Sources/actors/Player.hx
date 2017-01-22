@@ -5,8 +5,6 @@ import sdg.manager.Keyboard;
 import sdg.manager.GamePads;
 import attacks.Attack;
 
-	
-
 
 class Player extends Actor
 {

@@ -9,14 +9,17 @@ import kha.Scheduler;
 import format.tmx.Reader;
 import format.tmx.Data.TmxMap;
 import format.tmx.Data.TmxTileLayer;
+import format.tmx.Data.TmxObjectGroup;
 import sdg.graphics.tiles.Tileset;
 import sdg.graphics.tiles.Tilemap;
 import sdg.Object;
 import sdg.atlas.Region;
 import sdg.graphics.TileSprite;
+import collision.Wall;
 
 class PlayScreen extends Screen
 {
+	var walls:Array<Wall> = [];
 	public function new()
 	{
 		super();
@@ -66,7 +69,22 @@ class PlayScreen extends Screen
 							}
 						}
 					}
+				case ObjectGroup(layer):
+					if(layer.name == 'Boundries')
+					{
+						for(i in layer.objects)
+						{
+							//trace(i.x);
+							var x = Std.int(i.x);
+							var y = Std.int(i.y);
+							var w = Std.int(i.width);
+							var h = Std.int(i.height);
+							walls.push(new Wall(x, y, w, h));
+						}
+					}
 				default:
+					trace(layer);
+
 			}
 
 		}
