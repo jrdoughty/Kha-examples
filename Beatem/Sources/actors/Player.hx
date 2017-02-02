@@ -2,7 +2,7 @@ package actors;
 
 import kha.Image;
 import sdg.manager.Keyboard;
-import sdg.manager.GamePads;
+import sdg.manager.GamePad;
 import attacks.Attack;
 
 
@@ -50,12 +50,12 @@ class Player extends Actor
 
 	private function processAttackInput():Bool
 	{
-		if(Keyboard.isPressed(' ') || GamePads.get(playerIndex).buttonsPressed[GamePads.AX])
+		if(Keyboard.isPressed(' ') || GamePad.get(playerIndex).isPressed(GamePad.A_X))
 		{
 			new Attack(this, sprite.flip.x?'left':'right');
 		}
 
-		if(Keyboard.isHeld(' ') || GamePads.get(playerIndex).buttonsHeld[GamePads.AX])
+		if(Keyboard.isHeld(' ') || GamePad.get(playerIndex).isHeld(GamePad.A_X))
 		{
 			if(animator.nameAnim != 'attack')
   				animator.play('attack');
@@ -68,22 +68,22 @@ class Player extends Actor
 
 	private function processMoveInput()
 	{
-			if (Keyboard.isHeld('a') || Keyboard.isHeld('left') || GamePads.get(playerIndex).leftAnalog.x < -.5 || GamePads.get(playerIndex).buttonsHeld.get(GamePads.DLEFT))
+			if (Keyboard.isHeld('a') || Keyboard.isHeld('left') || GamePad.get(playerIndex).leftAnalog.x < -.5 || GamePad.get(playerIndex).isHeld(GamePad.DLEFT))
 			{
 				motion.acceleration.x = -speed;
 				sprite.flip.x = true;	
 			}            
-			else if (Keyboard.isHeld('d') || Keyboard.isHeld('right') || GamePads.get(playerIndex).leftAnalog.x > .5 || GamePads.get(playerIndex).buttonsHeld.get(GamePads.DRIGHT))
+			else if (Keyboard.isHeld('d') || Keyboard.isHeld('right') || GamePad.get(playerIndex).leftAnalog.x > .5 || GamePad.get(playerIndex).isHeld(GamePad.DRIGHT))
 			{		
 				motion.acceleration.x = speed;
 				sprite.flip.x = false;
 			}
 
-			if (Keyboard.isHeld('s') || Keyboard.isHeld('down') || GamePads.get(playerIndex).leftAnalog.y < -.5 || GamePads.get(playerIndex).buttonsHeld.get(GamePads.DDOWN))
+			if (Keyboard.isHeld('s') || Keyboard.isHeld('down') || GamePad.get(playerIndex).leftAnalog.y < -.5 || GamePad.get(playerIndex).isHeld(GamePad.DDOWN))
 			{
 				motion.acceleration.y = speed;
 			}            
-			else if (Keyboard.isHeld('w') || Keyboard.isHeld('up') || GamePads.get(playerIndex).leftAnalog.y > .5 || GamePads.get(playerIndex).buttonsHeld.get(GamePads.DUP))
+			else if (Keyboard.isHeld('w') || Keyboard.isHeld('up') || GamePad.get(playerIndex).leftAnalog.y > .5 || GamePad.get(playerIndex).isHeld(GamePad.DUP))
 			{		
 				motion.acceleration.y = -speed;
 			}

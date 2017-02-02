@@ -6,11 +6,12 @@ import kha.System;
 import kha.Assets;
 import sdg.Engine;
 import sdg.manager.Keyboard;
-import sdg.manager.GamePads;
+import sdg.manager.GamePadMan;
 import sdg.Sdg;
 import sdg.atlas.Atlas;
 import sdg.collision.Hitbox;
 import screens.PlayScreen;
+import sdg.manager.Manager.*;
 
 class Project {
 	public function new() {
@@ -20,8 +21,7 @@ class Project {
 	function assetsLoaded()
 	{
 		var engine = new Engine(1024, 320);
-		engine.addManager(new Keyboard());
-		engine.addManager(new GamePads());
+		engine.enable(KEYBOARD | MOUSE | GAMEPAD);
 
 		//Atlas.loadAtlasShoebox(Assets.images.textures, Assets.blobs.textures_xml);
 

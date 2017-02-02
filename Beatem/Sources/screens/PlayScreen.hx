@@ -40,9 +40,12 @@ class PlayScreen extends Screen
 						for(tile in layer.data.tiles)	
 						{
 							i++;
-							var ts = new TileSprite(Assets.images.floors,32,32);
-							ts.set_region(sdg.atlas.Atlas.createRegion(Assets.images.floors,(tile.gid-1)*32,0,32,32));
-							add(new Object((i%layer.width) * 32, Std.int(i/layer.width)*32 , ts));
+							var ts = new TileSprite(Assets.images.floors,32,32,(tile.gid-1),0);
+							//ts.set_region(sdg.atlas.Atlas.createRegion(Assets.images.floors,(tile.gid-1)*32,0,32,32));
+							ts.region = sdg.atlas.Atlas.createRegion(Assets.images.floors,(tile.gid-1)*32,0,32,32);
+							var o = new Object((i%layer.width) * 32, Std.int(i/layer.width)*32 , ts);
+							add(o);
+							//o.graphic.setClipping(Std.int(i/layer.width)*32,0,32,32);
 						}
 					}
 					else if (layer.name == 'EnemyLayer')
