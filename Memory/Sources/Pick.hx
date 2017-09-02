@@ -39,4 +39,12 @@ class Pick
 			activeSprite.setImage(pickImg);
 		}
 	}
+
+	public function resetToNewVal(newVal:Int, newImage:Image)
+	{
+		value = newVal;
+		active = false;
+		activeSprite.setImage(turnedImg);
+		pickImg = newImage;
+	}
 }

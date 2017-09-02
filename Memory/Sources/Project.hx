@@ -8,6 +8,9 @@ import kha.Image;
 import kha2d.Scene;
 import kha.input.Mouse;
 import haxe.Timer;
+import kha.Sound;
+import kha.audio1.Audio;
+import kha.audio1.AudioChannel;
 
 class Project {
 
@@ -18,27 +21,36 @@ class Project {
 	var activePick:Pick = null;
 	var turnTimer:Timer;
 	var picked:Bool = false;
-	var winText = "";
-	
+	var winText = "Pick to Start";
+	var win:Bool = true;
 
 	public function new() {
 		System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
-		createData(8);
-		Scene.the.setSize(256,256);
-		var i;
+		
+		Mouse.get().notify(onMouseDown, null, null, null);
+
+
+		init();
+	}
+
+	function init()
+	{
+
+		createData(18);
+		Scene.the.setSize(384,384);
 		var sqr = Math.ceil(Math.sqrt(pickData.length));
 		
 		for(i in 0...pickData.length)
 		{
-			picks.push(new Pick(pickData[i], types[pickData[i]], turnedDown, i % sqr * 64, Math.floor(i/sqr) * 64));
+			if(picks.length <= i)
+			{
+				picks.push(new Pick(pickData[i], types[pickData[i]], turnedDown, i % sqr * 64, Math.floor(i/sqr) * 64));
+			}
+			else
+			{
+				picks[i].resetToNewVal(pickData[i], types[pickData[i]]);
+			}
 		}
-		Mouse.get().notify(onMouseDown,onMouseUp,onMouseMove, null);
-
-	}
-
-	function update(): Void {
-		
 	}
 
 	function render(framebuffer: Framebuffer): Void {	
@@ -47,7 +59,7 @@ class Project {
 		Scene.the.render(graphics);
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 64;
-		graphics.drawString(winText, 32, 96);
+		graphics.drawString(winText, 56, 140);
 		graphics.end();		
 	}
 
@@ -55,83 +67,66 @@ class Project {
 	{
 		if(button == 0)
 		{
-			for(i in picks)
+			if(win && winText == "You Win")
 			{
-				if(!picked && x > i.activeSprite.x && x < i.activeSprite.x + i.activeSprite.width
-				&& y > i.activeSprite.y && y < i.activeSprite.y + i.activeSprite.height)
+				init();
+				winText = "Pick to Start";
+			}
+			else
+			{
+				winText = "";
+				for(i in picks)
 				{
-					if(activePick == null)
+					if(!picked && x > i.activeSprite.x && x < i.activeSprite.x + i.activeSprite.width
+					&& y > i.activeSprite.y && y < i.activeSprite.y + i.activeSprite.height)
 					{
-						activePick = i;
 						i.turn();
-					}
-					else
-					{
-						if(activePick.value == i.value)
+						if(activePick == null)
 						{
-							i.turn();
-							activePick = null;
-							
-							var win = true;
-							for(i in picks)
-							{
-								if(i.active == false)
-								{
-									win = false;
-									break;
-								}								
-							}
-							if(win)
-							{
-								winText = "You Win";
-							}
+							activePick = i;
+							Audio.play(Assets.sounds.pick);
 						}
 						else
 						{
-							i.turn();
-							turnTimer = new Timer(500);
-							picked = true;
-							turnTimer.run = function() {
-								activePick.turn();
-								i.turn();
+							if(activePick.value == i.value)
+							{
 								activePick = null;
-								picked = false;
-								turnTimer.stop();
-								turnTimer = null;
+								
+								win = true;
+								for(i in picks)
+								{
+									if(i.active == false)
+									{
+										win = false;
+										break;
+									}								
+								}
+								if(win && winText != "You Win")
+								{
+									winText = "You Win";
+								}
+								Audio.play(Assets.sounds.right);
+							}
+							else
+							{
+								turnTimer = new Timer(500);
+								picked = true;
+								turnTimer.run = function() {
+									activePick.turn();
+									i.turn();
+									activePick = null;
+									picked = false;
+									turnTimer.stop();
+									turnTimer = null;
+									Audio.play(Assets.sounds.wrong);
+								}
+								Audio.play(Assets.sounds.wrong);
 							}
 						}
+						break;
 					}
-					break;
 				}
 			}
-		}
-		if(button == 1)
-		{
-
-		}
-	}
-
-	public function onMouseUp(button:Int, x:Int, y:Int)
-	{
-		if(button == 0)
-		{
-
-		}
-		if(button == 1)
-		{
-
-		}
-	}
-
-	public function onMouseMove(x:Int, y:Int, cx:Int, cy:Int)
-	{
-		if(x > 0)
-		{
-
-		}
-		if(y > 0)
-		{
-
 		}
 	}
 
