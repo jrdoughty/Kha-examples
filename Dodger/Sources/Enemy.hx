@@ -1,4 +1,5 @@
 import kha2d.Sprite;
+import kha2d.Animation;
 import kha.Image;
 import kha.System;
 
@@ -10,12 +11,14 @@ class Enemy extends Sprite
 	{
 		super(image, width, height, z);
 		reset();
+		setAnimation(Animation.createRange(0,3,10*Math.floor(speed-1)));
 	}
 
 	public override function update()
 	{
 		super.update();
-		y += speed;			
+		y += speed;		
+		
 		if(y > System.windowHeight())
 		{
 			reset();

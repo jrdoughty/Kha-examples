@@ -49,6 +49,8 @@ class Project {
 				score -= 50;
 			}
 		}
+		if(score<0)
+			score = 0;
 	}
 
 	function render(framebuffer: Framebuffer): Void 

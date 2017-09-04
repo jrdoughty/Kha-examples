@@ -13,15 +13,16 @@ import haxe.Timer;
 import kha.Sound;
 import kha.audio1.Audio;
 import kha.audio1.AudioChannel;
+import Pick;
 
 class Project {
 
-	var picks:Array<Sprite> = [];
+	var picks:Array<Pick> = [];
 	var brighten:Animation = Animation.create(2);
 	var darken:Animation = Animation.create(1);
 	var norm:Animation = Animation.create(0);
-	var sequenceToMatch:Array<Sprite> = [];
-	var sequenceOfPlayer:Array<Sprite> = [];
+	var sequenceToMatch:Array<Pick> = [];
+	var sequenceOfPlayer:Array<Pick> = [];
 	var disableInput:Bool = true;
 	var timer:Timer;
 	var showBeep:Sound;
@@ -34,7 +35,7 @@ class Project {
 		Scheduler.addTimeTask(update, 0, 1 / 60);
 		var i;
 		var ai = Assets.images;
-		var images:Array<Image> = [ai.green,ai.blue,ai.red,ai.yellow];
+		var pds:Array<PickData> = [{image:ai.green,sound:Assets.sounds.C},{image:ai.blue,sound:Assets.sounds.G},{image:ai.red,sound:Assets.sounds.E},{image:ai.yellow,sound:Assets.sounds.B}];
 
 		showBeep = Assets.sounds.Pickup_Coin15;
 		beep = Assets.sounds.Pickup_Coin30;
@@ -42,11 +43,17 @@ class Project {
 
 		for(i in 0...4)
 		{
-			picks.push(new Sprite(images[i],64,64,0));
+			picks.push(new Pick(pds[i]));
 			picks[i].x = i % 2 * 64;
 			picks[i].y = Math.floor(i/2) * 64;
 			Scene.the.addOther(picks[i]);
 		}
+		Mouse.get().notify(start, null, null, null);
+	}
+
+	private function start(button:Int, x:Int, y:Int)
+	{
+		Mouse.get().remove(start,null,null,null);
 		Mouse.get().notify(onMouseDown, onMouseUp, null, null);
 		addNewPickToSequence();
 	}
@@ -54,7 +61,8 @@ class Project {
 	public function addNewPickToSequence()
 	{
 		sequenceOfPlayer = [];
-		sequenceToMatch.push(picks[Math.floor(picks.length * Math.random())]);
+		var newPick = picks[Math.floor(picks.length * Math.random())];
+		sequenceToMatch.push(newPick);
 		disableInput = true;
 		timer = new Timer(1000);
 		var i = -1;
@@ -64,7 +72,7 @@ class Project {
 			if(i != sequenceToMatch.length)
 			{
 				sequenceToMatch[i].setAnimation(darken);
-				Audio.play(showBeep, false);
+				Audio.play(sequenceToMatch[i].sound);
 				t = new Timer(500);
 				t.run = function(){
 					sequenceToMatch[i].setAnimation(norm);
@@ -117,7 +125,7 @@ class Project {
 					}
 					else
 					{
-						Audio.play(beep, false);
+						Audio.play(i.sound, false);
 					}
 				}
 			}
@@ -145,7 +153,10 @@ class Project {
 		Scene.the.render(graphics);
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 64;
-		graphics.drawString((sequenceToMatch.length-1)+"", 52, 32);
+		if(sequenceToMatch.length>0)
+			graphics.drawString((sequenceToMatch.length-1)+"", 52, 32);
+		else
+			graphics.drawString("Start", 8, 32);
 		graphics.end();
 	}
 }

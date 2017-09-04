@@ -6,6 +6,7 @@ import kha.System;
 import kha2d.Sprite;
 import kha2d.Scene;
 import kha.Assets;
+import kha.audio1.Audio;
 import kha.input.Keyboard;
 import kha.Key;
 
@@ -31,7 +32,6 @@ class Project {
 
 	public function new() {
 		System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
 		var i;
 		var j;
 		
@@ -46,13 +46,8 @@ class Project {
 				Scene.the.addOther(nodes[i][j]);
 			}
 		}
-		snakeX = 3;
-		snakeY = 3;
-
-		targetX = 6;
-		targetY = 6;
+		reset(false);
 		Keyboard.get().notify(keyDown,null);
-		Scheduler.addTimeTask(turn, 0, 1);
 	}
 
 	function keyDown(key:Key, char:String)
@@ -83,7 +78,7 @@ class Project {
 		}
 		
 	}
-	function reset()
+	function reset(bSound:Bool = true)
 	{
 		direction = null;		
 		for(i in 0...numNodesWidth)
@@ -96,10 +91,14 @@ class Project {
 		}
 		snakeX = 3;
 		snakeY = 3;
-
+		
 		targetX = 6;
 		targetY = 6;
 		score = 1;
+		if(bSound)
+			Audio.play(Assets.sounds.death);
+		var mod = (.1 * score)>0?(.1 * score):0;
+		turn();
 	}
 	function turn()
 	{
@@ -156,7 +155,8 @@ class Project {
 					nodes[i][j].setImage(Assets.images.black);
 					nodes[i][j].turnsSinceOccupied = -1;
 				}
-				else if(i == targetX && j == targetY && targetX != snakeX && targetY != snakeY)
+				else if(i == targetX && j == targetY && 
+				targetX != snakeX && targetY != snakeY)
 				{
 					nodes[i][j].setImage(Assets.images.red);
 				}
@@ -165,6 +165,7 @@ class Project {
 					if(targetX == i && targetY == j)
 					{
 						score++;
+						Audio.play(Assets.sounds.powerup);
 						while(nodes[targetX][targetY].turnsSinceOccupied >= 0)
 						{
 							targetX = Math.floor(Math.random() * numNodesWidth);
@@ -177,6 +178,8 @@ class Project {
 				}
 			}
 		}
+		var mod = (.1 * score)>0?(.1 * score):0;
+		Scheduler.addTimeTask(turn, 1 - mod +.4, 1, 1);
 	}
 
 
