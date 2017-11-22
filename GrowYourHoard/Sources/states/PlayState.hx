@@ -86,7 +86,7 @@ class PlayState extends BaseState
 
 	private function getSpawnTime():Int
 	{
-		return Math.floor(1000 * Math.random() * 4);
+		return Math.floor(1000 * Math.random() * 3);
 	}
 
 	private function createCounts()

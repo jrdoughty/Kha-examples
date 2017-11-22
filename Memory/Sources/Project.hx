@@ -36,8 +36,8 @@ class Project {
 	function init()
 	{
 
-		createData(18);
-		Scene.the.setSize(384,384);
+		createData(8);
+		Scene.the.setSize(256,256);
 		var sqr = Math.ceil(Math.sqrt(pickData.length));
 		
 		for(i in 0...pickData.length)
@@ -58,8 +58,8 @@ class Project {
 		graphics.begin();
 		Scene.the.render(graphics);
 		graphics.font = Assets.fonts.OpenSans;
-		graphics.fontSize = 64;
-		graphics.drawString(winText, 56, 140);
+		graphics.fontSize = 40;
+		graphics.drawString(winText, 50, 106);
 		graphics.end();		
 	}
 

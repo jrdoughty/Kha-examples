@@ -438,10 +438,12 @@ class Project {
 		Scene.the.render(graphics);		
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 64;
-		graphics.drawString(score+"", 320, 32);
+		graphics.drawString(score+"", 290, 32);
 		graphics.fontSize = 32;
-		graphics.drawString("Original Concept by Alexey Pajinov", 320, 96);
-		graphics.drawString("Original Music by Hirokazu Tanaka", 320, 124);
+		graphics.drawString("Original Concept", 290, 96);
+		graphics.drawString("by Alexey Pajinov", 290, 124);
+		graphics.drawString("Original Music", 290, 160);
+		graphics.drawString("by Hirokazu Tanaka", 290, 192);
 		graphics.end();
 	}
 }

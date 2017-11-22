@@ -3,7 +3,7 @@ package actors;
 import kha2d.Sprite;
 import kha.input.Keyboard;
 import kha.Image;
-import kha.Key;
+import kha.input.KeyCode;
 import kha2d.Animation;
 
 class Player extends Sprite
@@ -27,9 +27,9 @@ class Player extends Sprite
 		spriteCache = new SpriteCache(this);
 	}
 
-	public function keyDown(key:Key, chars:String)
+	public function keyDown(key:Int)
 	{
-		if(key == Key.LEFT || chars.indexOf("a") != -1)
+		if(key == KeyCode.Left || key == KeyCode.A)
 		{
 			if(scaleX > 0)
 			{
@@ -39,7 +39,7 @@ class Player extends Sprite
 			left = true;
 			setAnimation(mainAnim);
 		}
-		else if(key == Key.RIGHT || chars.indexOf("d") != -1)
+		else if(key == KeyCode.Right || key == KeyCode.D)
 		{
 			if(scaleX < 0)
 			{
@@ -51,13 +51,13 @@ class Player extends Sprite
 		}
 	}
 
-	public function keyUp(key:Key, chars:String)
+	public function keyUp(key:Int)
 	{
-		if(key == Key.LEFT || chars.indexOf("a") != -1)
+		if(key == KeyCode.Left || key == KeyCode.A)
 		{
 			left = false;
 		}
-		else if(key == Key.RIGHT || chars.indexOf("d") != -1)
+		else if(key == KeyCode.Right || key == KeyCode.D)
 		{
 			right = false;
 		}

@@ -32,6 +32,7 @@ class Project {
 
 	public function new() {
 		System.notifyOnRender(render);
+		Scene.the.setSize(512,512);
 		var i;
 		var j;
 		
