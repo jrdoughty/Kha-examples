@@ -8,7 +8,7 @@ import kha2d.Scene;
 import kha.Assets;
 import kha.audio1.Audio;
 import kha.input.Keyboard;
-import kha.Key;
+import kha.input.KeyCode;
 
 enum Directions {
 		DOWN;
@@ -51,31 +51,18 @@ class Project {
 		Keyboard.get().notify(keyDown,null);
 	}
 
-	function keyDown(key:Key, char:String)
+	function keyDown(key:Int)
 	{
-		trace(char);
 		switch (key)
 		{
-			case LEFT: 
+			case KeyCode.A | KeyCode.Left: 
 				direction = LEFT;
-			case RIGHT: 
+			case KeyCode.D | KeyCode.Right: 
 				direction = RIGHT;
-			case UP: 
+			case KeyCode.Up | KeyCode.W: 
 				direction = UP;
-			case DOWN: 
+			case KeyCode.S | KeyCode.Down: 
 				direction = DOWN;
-			default:
-				switch (char)
-				{
-					case 'a': 
-						direction = LEFT;
-					case 'd': 
-						direction = RIGHT;
-					case 'w': 
-						direction = UP;
-					case 's': 
-						direction = DOWN;
-				}
 		}
 		
 	}
