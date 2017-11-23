@@ -6,7 +6,7 @@ import kha.System;
 import kha.Assets;
 import kha2d.Scene;
 import kha2d.Sprite;
-import kha.Key;
+import kha.input.KeyCode;
 import kha.input.Keyboard;
 import kha.audio1.Audio;
 
@@ -118,31 +118,18 @@ class Project {
 	}
 
 
-	function onKeyDown(key:Key, char:String)
+	function onKeyDown(key:Int)
 	{
 		switch(key)
 		{
-			case LEFT:
+			case KeyCode.A | KeyCode.Left: 
 				move(true);
-			case RIGHT:
+			case KeyCode.D | KeyCode.Right: 
 				move(false);
-			case DOWN:
-				turn();
-			case UP:
+			case KeyCode.Up | KeyCode.W: 
 				rotate();
-			default: switch(char)
-			{
-				case " ":
-					rotate();
-				case "w":
-					rotate();
-				case "a":
-					move(true);
-				case "d":
-					move(false);
-				case "s":
-					turn();
-			}
+			case KeyCode.S | KeyCode.Down: 
+				turn();
 		}
 	}
 
