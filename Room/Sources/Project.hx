@@ -16,7 +16,7 @@ class Project {
 	var pointInConvArray:Int = 0;
 	var pointInTextArray:Int = 0;
 	var data = Data.the;
-	var chats:Dynamic;
+	var chats:Map<String,Dynamic>;
 	var t:Text;
 	var diagnosis:Text = new Text("test",0,360,40);
 	var buttonsActive:Bool = false;
