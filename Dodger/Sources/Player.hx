@@ -1,7 +1,7 @@
 import kha2d.Sprite;
 import kha.input.Keyboard;
 import kha.Image;
-import kha.Key;
+import kha.input.KeyCode;
 import kha.input.Mouse;
 
 class Player extends Sprite
@@ -81,44 +81,40 @@ class Player extends Sprite
 		}
 	}
 
-	function onKeyDown(key:Key, char:String)
+	function onKeyDown(key:Int)
 	{
-		switch (key){
-			case LEFT: left = true;
-			case RIGHT: right = true;
-			case UP: up = true;
-			case DOWN: down = true;
-		default: switch (char)
-				{
-					case 'a': 
-						left = true;
-					case 'd': 
-						right = true;
-					case 'w': 
-						up = true;
-					case 's': 
-						down = true;
-				}
+		switch (key)
+		{				
+			case KeyCode.Left: left = true;
+			case KeyCode.Right: right = true;
+			case KeyCode.Up: up = true;
+			case KeyCode.Down: down = true;
+			case KeyCode.A: 
+				left = true;
+			case KeyCode.D: 
+				right = true;
+			case KeyCode.W: 
+				up = true;
+			case KeyCode.S: 
+				down = true;
 		}
 	}
-	function onKeyUp(key:Key, char:String)
+	function onKeyUp(key:Int)
 	{
-		switch (key){
-			case LEFT: left = false;
-			case RIGHT: right = false;
-			case UP: up = false;
-			case DOWN: down = false;
-		default: switch (char)
-				{
-					case 'a': 
-						left = false;
-					case 'd': 
-						right = false;
-					case 'w': 
-						up = false;
-					case 's': 
-						down = false;
-				}
+		switch (key)
+		{				
+			case KeyCode.Left: left = false;
+			case KeyCode.Right: right = false;
+			case KeyCode.Up: up = false;
+			case KeyCode.Down: down = false;
+			case KeyCode.A: 
+				left = false;
+			case KeyCode.D: 
+				right = false;
+			case KeyCode.W: 
+				up = false;
+			case KeyCode.S: 
+				down = false;
 		}
 	}
 	function onMouseDown(button:Int, mX:Int, mY:Int)
