@@ -11,14 +11,18 @@ import kha.Assets;
 class Project {
 
 	var character:Sprite;
-	public var numEnemys:Int = 25;
+	public var numEnemys:Int = 100;
 	public var score:Int = 0;
+	public var fps:Int = 0;
 	public var enemys:Array<Enemy> = [];
 
 	public function new() 
 	{
 		System.notifyOnRender(render);
 		Scheduler.addTimeTask(update, 0, 1 / 60);
+		Scheduler.addTimeTask(secondTick, 0, 1);
+		var images = Assets.images;
+		true;
 		character = new Player(Assets.images.main,32,32,0);
 		character.x = System.windowWidth()/2;
 		character.y = System.windowHeight()-character.height;
@@ -36,7 +40,7 @@ class Project {
 	function update(): Void 
 	{
 		Scene.the.update();
-		score++;
+		//score++;
 
 		var i;
 		for(i in 0...enemys.length)
@@ -46,13 +50,20 @@ class Project {
 			character.x > enemys[i].x + enemys[i].width || character.y > enemys[i].y + enemys[i].height))
 			{
 				enemys[i].reset();
-				score -= 50;
+				//score -= 50;
 			}
 		}
+		/*
 		if(score<0)
 			score = 0;
+		*/
 	}
 
+	function secondTick(): Void 
+	{
+		fps = score;
+		score = 0;
+	}
 	function render(framebuffer: Framebuffer): Void 
 	{
 		var graphics = framebuffer.g2;
@@ -60,7 +71,9 @@ class Project {
 		Scene.the.render(graphics);
 		graphics.font = Assets.fonts.OpenSans;
 		graphics.fontSize = 48;
-		graphics.drawString(score+"", 540, 32);
-		graphics.end();		
+		graphics.drawString(fps+"", 540, 32);
+		graphics.end();	
+		
+		score++;
 	}
 }

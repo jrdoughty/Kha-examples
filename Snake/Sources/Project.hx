@@ -31,7 +31,7 @@ class Project {
 	var score = 1;
 
 	public function new() {
-		System.notifyOnRender(render);
+		System.notifyOnFrames(renderBuffers);
 		Scene.the.setSize(512,512);
 		var i;
 		var j;
@@ -173,6 +173,13 @@ class Project {
 
 	function update(): Void {
 		
+	}
+
+	function renderBuffers(framebuffers:Array<Framebuffer>) {
+		for(i in 0...framebuffers.length)
+		{
+			render(framebuffers[i]);
+		}
 	}
 
 	function render(framebuffer: Framebuffer): Void {	

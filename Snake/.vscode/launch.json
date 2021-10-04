@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Kha: HTML5",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "cwd": "${workspaceFolder}/build/debug-html5",
+            "runtimeExecutable": "${command:kha.findKhaElectron}",
+            "runtimeArgs": [
+                "--no-sandbox",
+                "--force-device-scale-factor=1",
+                "."
+            ],
+            "outFiles": [
+                "${workspaceFolder}/build/debug-html5/*.js"
+            ],
+            "preLaunchTask": "Kha: Build for Debug HTML5",
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "krom",
+            "request": "launch",
+            "name": "Kha: Krom",
+            "preLaunchTask": "Kha: Build for Krom",
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ],
+    "compounds": []
+}
