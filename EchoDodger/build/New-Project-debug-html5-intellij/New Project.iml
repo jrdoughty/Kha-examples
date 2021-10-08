@@ -17,7 +17,7 @@
     <content url="file://$MODULE_DIR$/../..">
       <sourceFolder url="file://c:\Users\johnd\.vscode\extensions\kodetech.kha-21.9.0\Kha\Sources" isTestSource="false" />
       <sourceFolder url="file://c:\Users\johnd\.vscode\extensions\kodetech.kha-21.9.0\Kha\Backends\HTML5" isTestSource="false" />
-      <sourceFolder url="file://C:\Users\johnd\OneDrive\Documents\Projects\kha-examples\Dodger\Sources" isTestSource="false" />
+      <sourceFolder url="file://C:\Users\johnd\OneDrive\Documents\Projects\kha-examples\EchoDodger\Sources" isTestSource="false" />
       <sourceFolder url="file://C:\HaxeToolkit\haxe\lib\Echoes\git\src\" isTestSource="false" />
 
     </content>

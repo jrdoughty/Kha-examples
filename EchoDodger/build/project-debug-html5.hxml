@@ -1,6 +1,6 @@
 -cp c:\Users\johnd\.vscode\extensions\kodetech.kha-21.9.0\Kha\Sources
 -cp c:\Users\johnd\.vscode\extensions\kodetech.kha-21.9.0\Kha\Backends\HTML5
--cp C:\Users\johnd\OneDrive\Documents\Projects\kha-examples\Dodger\Sources
+-cp C:\Users\johnd\OneDrive\Documents\Projects\kha-examples\EchoDodger\Sources
 -cp C:\HaxeToolkit\haxe\lib\Echoes\git\src\
 -cp C:\HaxeToolkit\haxe\lib\Echoes\git
 -D hxcpp_smart_strings

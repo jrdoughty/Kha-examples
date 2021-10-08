@@ -4,16 +4,12 @@ import systems.Animation;
 import kha.Framebuffer;
 import kha.Scheduler;
 import kha.System;
-import kha2d.Scene;
-import kha2d.Sprite;
 import kha.Assets;
 import echoes.Entity;
 import components.*;
 import echoes.Workflow;
 
 class Project {
-
-	var character:Sprite;
 	var characterEcho:Entity;
 	public var numEnemys:Int = 100;
 	public var score:Int = 0;
@@ -68,11 +64,7 @@ class Project {
 		graphics.drawScaledImage(Assets.images.back,0,0,Main.WIDTH,Main.HEIGHT);
 		for(i in enemiesEcho)
 		{
-//			graphics.drawRect(i.get(Position).x, i.get(Position).y, 32, 32, 1.0);
-			//graphics.drawImage();
-			//graphics.drawScaledSubImage(i.get(ImageComp).value, 0,0,32,32, i.get(Position).x, i.get(Position).y, 32*i.get(Scale).value, 32*i.get(Scale).value);
 			Animation.render(graphics,i.get(AnimComp),i.get(ImageComp),i.get(WH),i.get(Position),i.get(Scale));
-			//(img, sx, sy, sw, sh, x, y, sw, sh);
 		}
 		graphics.drawSubImage(characterEcho.get(ImageComp).value, characterEcho.get(Position).x, characterEcho.get(Position).y, 0, 0, 32, 32);
 		//graphics.drawRect()
