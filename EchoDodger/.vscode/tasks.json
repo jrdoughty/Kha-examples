@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "Kha",
+			"target": "Debug HTML5",
+			"problemMatcher": [
+				"$haxe-absolute",
+				"$haxe"
+			],
+			"group": "build",
+			"label": "Kha: Build for Debug HTML5"
+		}
+	]
+}
